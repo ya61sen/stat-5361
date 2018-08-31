@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>STAT 5361: Statistical Computing, Fall 2018</title>
+  <meta name="description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="STAT 5361: Statistical Computing, Fall 2018" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="STAT 5361: Statistical Computing, Fall 2018" />
+  
+  <meta name="twitter:description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn." />
+  
+
+<meta name="author" content="Jun Yan">
+
+
+<meta name="date" content="2018-08-31">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="intro.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#a-teaser-example-likelihood-estimation"><i class="fa fa-check"></i><b>1.1</b> A Teaser Example: Likelihood Estimation</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.2</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="optim.html"><a href="optim.html"><i class="fa fa-check"></i><b>3</b> Optimization</a></li>
+<li class="chapter" data-level="4" data-path="em-algorithm.html"><a href="em-algorithm.html"><i class="fa fa-check"></i><b>4</b> EM Algorithm</a></li>
+<li class="chapter" data-level="5" data-path="random-number-generation.html"><a href="random-number-generation.html"><i class="fa fa-check"></i><b>5</b> Random Number Generation</a></li>
+<li class="chapter" data-level="6" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html"><i class="fa fa-check"></i><b>6</b> Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT 5361: Statistical Computing, Fall 2018</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">STAT 5361: Statistical Computing, Fall 2018</h1>
+<h4 class="author"><em>Jun Yan</em></h4>
+<h4 class="date"><em>2018-08-31</em></h4>
+</div>
+<div id="prerequisites" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
+<p>We assume that students can use R/Rstudio comfortably. If you are new to R, an extra amount of hard work should be devoted to make it up. In addition to the official documentations from the R-project, the presentations at a [local SIAM workshop in Spring 2018] (<a href="https://siam.math.uconn.edu/events/" class="uri">https://siam.math.uconn.edu/events/</a>) given by Wenjie Wang, a PhD student in Statistics at the time, can be enlighting:</p>
+<ul>
+<li><a href="https://github.com/wenjie2wang/2018-01-19-siam" class="uri">https://github.com/wenjie2wang/2018-01-19-siam</a></li>
+<li><a href="https://github.com/wenjie2wang/2018-04-06-siam" class="uri">https://github.com/wenjie2wang/2018-04-06-siam</a></li>
+</ul>
+<p>If you have used R, but never paid attention to R programming styles, a style clinic would be a necessary step. A good place to start is Google’s R style guide at <a href="https://google.github.io/styleguide/Rguide.xml" class="uri">https://google.github.io/styleguide/Rguide.xml</a>. From my experience, the two most commonly overlooked styles for beginners are spacing and indentation. Appropriate spacing and indentation would immediately make crowdly piled code much more eye-friendly. Such styles can be automatically enforced by R packages such as <strong>formatr</strong> or <strong>lintr</strong>. Tow important styles that cannot be automatically corrected are naming and documentation. As in any programming languate, naming of R objects (variables, functions, files, etc.) shoud be informative, concise, and consistent with certain naming convention. Documentation needs to be sufficient, concise, and kept close to the code; tools like R package <strong>roxygen2</strong> can be very helpful. See Hadley Wichham’s online book <a href="http://style.tidyverse.org/" class="uri">http://style.tidyverse.org/</a> for more detailed tips.</p>
+<p>For intermediate R users who want a skill lift, The <strong>Advanced R Programming</strong> book by Hadley Wickham is available at <a href="https://adv-r.hadley.nz/" class="uri">https://adv-r.hadley.nz/</a>. The source that generated the book is kindly made available at GitHub: <a href="https://github.com/hadley/adv-r" class="uri">https://github.com/hadley/adv-r</a>. It is a great learning experience to complile the book from the source, during which you may pick up many necessary skills.</p>
+<p>The homework, exam, and project will be completed by <strong>R Markdown</strong>. Following the step by step the instructions in Yihui Xie’s online book on <strong>bookdown</strong> at <a href="https://bookdown.org/yihui/bookdown/" class="uri">https://bookdown.org/yihui/bookdown/</a>, you will be amazed how quickly you can learn to produce cool-looking documents and even book manuscripts. If you are a keener, you may as well following Yihui’s <strong>blogdown</strong>, see online book <a href="https://bookdown.org/yihui/blogdown/" class="uri">https://bookdown.org/yihui/blogdown/</a>, to build your own website using R Markdown.</p>
+<p>All your source code will be version controlled by <strong>git</strong> and archived on <strong>GitHub</strong>. RStudio has made using git quite straightforward. The online tutorial by Jenny Bryan, Happy Git and GitHub for the useR, is a very useful tool to get started</p>
+<div id="a-teaser-example-likelihood-estimation" class="section level2">
+<h2><span class="header-section-number">1.1</span> A Teaser Example: Likelihood Estimation</h2>
+<p>In mathematical statistics, we have learned that, under certain regularity conditions, the maximum likelihood estimator (MLE) is consistent, asymptotically normal, and most efficient. The asymptotic variance of the estimator if the inverse of the Fisher information matrix. Specifically, let <span class="math inline">\(X_1, \ldots, X_n\)</span> be a random sample from a distribution with density <span class="math inline">\(f(x; \theta)\)</span>, where <span class="math inline">\(\theta\)</span> is a parameter. How do we obtain the MLE?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+n &lt;-<span class="st"> </span><span class="dv">100</span>
+x &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape =</span> <span class="dv">2</span>, <span class="dt">scale =</span> <span class="dv">4</span>)
+<span class="kw">hist</span>(x)</code></pre></div>
+<p><img src="stat5361-book_files/figure-html/data-1.png" width="672" /></p>
+<p>Package <strong>MASS</strong> provides a function <code>fitdistr()</code> to obtain the MLE for univariate distributions with a random sample. We can learn two things from this function. First, an objective function representing the negative loglikelihood is formed, depending on the input of the density function, and fed to the optimizer function <code>optim</code>. Second, the variance estimator of the MLE is obtained by inverting the Hessian matrix of the objective function, which is an estimator of the Fisher information matrix. For commonly used distributions, starting values are not necessary. The function computes moment estimator and use them as starting values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> <span class="st">&quot;gamma&quot;</span>)</code></pre></div>
+<pre><code>## Warning in densfun(x, parm[1], parm[2], ...): NaNs produced</code></pre>
+<pre><code>##      shape         rate   
+##   2.19321713   0.31850407 
+##  (0.28968120) (0.04724651)</code></pre>
+<p>For distributions not in the provided list, the <code>densfun</code> needs to be a function returning a density evaluated at its first arguments, in which case, the <code>start</code> argument needs to be a named list to feed to the optimizer. For example, pretend that someone has a fancy distribution which is just a rename of the gamma distribution. Its density function is defined based on the gamma density <code>dgamma</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfancy &lt;-<span class="st"> </span><span class="cf">function</span>(x, shape, scale, <span class="dt">log =</span> <span class="ot">FALSE</span>) {
+  <span class="kw">dgamma</span>(x, <span class="dt">shape =</span> shape, <span class="dt">scale =</span> scale, <span class="dt">log =</span> log)
+}
+
+<span class="kw">suppressWarnings</span>(MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> dfancy, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">20</span>)))</code></pre></div>
+<pre><code>##      shape       scale  
+##   2.1931194   3.1400457 
+##  (0.2897513) (0.4659625)</code></pre>
+<p>The <strong>stats4</strong> package provides MLE using S4 classes.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nll &lt;-<span class="st"> </span><span class="cf">function</span>(shape, scale) <span class="op">-</span><span class="kw">sum</span>(<span class="kw">dfancy</span>(x, shape, scale, <span class="ot">TRUE</span>))
+<span class="kw">suppressWarnings</span>(fit &lt;-<span class="st"> </span>stats4<span class="op">::</span><span class="kw">mle</span>(nll, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">10</span>)))
+stats4<span class="op">::</span><span class="kw">summary</span>(fit)</code></pre></div>
+<pre><code>## Maximum likelihood estimation
+## 
+## Call:
+## stats4::mle(minuslogl = nll, start = list(shape = 10, scale = 10))
+## 
+## Coefficients:
+##       Estimate Std. Error
+## shape 2.193213  0.2896847
+## scale 3.139686  0.4657464
+## 
+## -2 log L: 557.1586</code></pre>
+</div>
+<div id="exercises" class="section level2">
+<h2><span class="header-section-number">1.2</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>Use git to clone the source of Hadley Wickham’s <strong>Advanced R Programming</strong> from his GitHub repository to a local space on your own computer. Build the book using RStudio. During the building process, you may see error messages due to missing tools on your computer. Read the error messages carefully and fix them, until you get the book built. You may need to install some R packages, some fonts, some latex packages, and some building tools for R packages. On Windows, some codes for parallel computing may not work and need to be commented out.</p></li>
+<li>Use <strong>bookdown</strong> or <strong>rmarkdown</strong> to produce a report for the following task. Consider approximation of the distribution function of <span class="math inline">\(N(0, 1)\)</span>,
+<span class="math display" id="eq:cdf">\[\begin{equation}
+\Phi(t) = \int_{-\infty}^t \frac{1}{\sqrt{2\pi}} e^{-y^2 / 2} dy,
+\tag{1.1}
+\end{equation}\]</span>
+by the Monte Carlo methods:
+<span class="math display">\[\begin{equation}
+\hat\Phi(t) = \frac{1}{n} \sum_{i=1}^n I(X_i \le t),
+\end{equation}\]</span>
+<p>where <span class="math inline">\(X_i\)</span>’s are iid <span class="math inline">\(N(0, 1)\)</span> variables. Experiment with the approximation at <span class="math inline">\(n \in \{10^2, 10^3, 10^4\}\)</span> at <span class="math inline">\(t \in \{0.0, 0.67, 0.84, 1.28, 1.65, 2.32, 2.58, 3.09, 3.72\}\)</span> to form a table. The table should include the true value for comparison. Further, repeat the experiment 100 times. Draw box plots of the bias at all <span class="math inline">\(t\)</span>. The report should look like a manuscript, with a title, an abstract, and multiple sections. It should contain at least one math equation, one table, one figure, and one chunk of R code. The template of our Data Science Lab can be helpful: <a href="https://statds.org/template/" class="uri">https://statds.org/template/</a>, the source of which is at <a href="https://github.com/statds/dslab-templates" class="uri">https://github.com/statds/dslab-templates</a>.</p></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["stat5361-book.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
