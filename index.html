@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-08-31">
+<meta name="date" content="2018-09-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,41 +50,69 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -101,7 +129,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a><ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#a-teaser-example-likelihood-estimation"><i class="fa fa-check"></i><b>1.1</b> A Teaser Example: Likelihood Estimation</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.2</b> Exercises</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#computer-arithmetics"><i class="fa fa-check"></i><b>1.2</b> Computer Arithmetics</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#integers"><i class="fa fa-check"></i><b>1.2.1</b> Integers</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#floating-point"><i class="fa fa-check"></i><b>1.2.2</b> Floating Point</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
 <li class="chapter" data-level="3" data-path="optim.html"><a href="optim.html"><i class="fa fa-check"></i><b>3</b> Optimization</a></li>
@@ -129,7 +161,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">STAT 5361: Statistical Computing, Fall 2018</h1>
 <h4 class="author"><em>Jun Yan</em></h4>
-<h4 class="date"><em>2018-08-31</em></h4>
+<h4 class="date"><em>2018-09-04</em></h4>
 </div>
 <div id="prerequisites" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
@@ -145,30 +177,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="a-teaser-example-likelihood-estimation" class="section level2">
 <h2><span class="header-section-number">1.1</span> A Teaser Example: Likelihood Estimation</h2>
 <p>In mathematical statistics, we have learned that, under certain regularity conditions, the maximum likelihood estimator (MLE) is consistent, asymptotically normal, and most efficient. The asymptotic variance of the estimator if the inverse of the Fisher information matrix. Specifically, let <span class="math inline">\(X_1, \ldots, X_n\)</span> be a random sample from a distribution with density <span class="math inline">\(f(x; \theta)\)</span>, where <span class="math inline">\(\theta\)</span> is a parameter. How do we obtain the MLE?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
-n &lt;-<span class="st"> </span><span class="dv">100</span>
-x &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape =</span> <span class="dv">2</span>, <span class="dt">scale =</span> <span class="dv">4</span>)
-<span class="kw">hist</span>(x)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">x &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape =</span> <span class="dv">2</span>, <span class="dt">scale =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">hist</span>(x)</a></code></pre></div>
 <p><img src="stat5361-book_files/figure-html/data-1.png" width="672" /></p>
 <p>Package <strong>MASS</strong> provides a function <code>fitdistr()</code> to obtain the MLE for univariate distributions with a random sample. We can learn two things from this function. First, an objective function representing the negative loglikelihood is formed, depending on the input of the density function, and fed to the optimizer function <code>optim</code>. Second, the variance estimator of the MLE is obtained by inverting the Hessian matrix of the objective function, which is an estimator of the Fisher information matrix. For commonly used distributions, starting values are not necessary. The function computes moment estimator and use them as starting values.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> <span class="st">&quot;gamma&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> <span class="st">&quot;gamma&quot;</span>)</a></code></pre></div>
 <pre><code>## Warning in densfun(x, parm[1], parm[2], ...): NaNs produced</code></pre>
 <pre><code>##      shape         rate   
 ##   2.19321713   0.31850407 
 ##  (0.28968120) (0.04724651)</code></pre>
 <p>For distributions not in the provided list, the <code>densfun</code> needs to be a function returning a density evaluated at its first arguments, in which case, the <code>start</code> argument needs to be a named list to feed to the optimizer. For example, pretend that someone has a fancy distribution which is just a rename of the gamma distribution. Its density function is defined based on the gamma density <code>dgamma</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfancy &lt;-<span class="st"> </span><span class="cf">function</span>(x, shape, scale, <span class="dt">log =</span> <span class="ot">FALSE</span>) {
-  <span class="kw">dgamma</span>(x, <span class="dt">shape =</span> shape, <span class="dt">scale =</span> scale, <span class="dt">log =</span> log)
-}
-
-<span class="kw">suppressWarnings</span>(MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> dfancy, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">20</span>)))</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">dfancy &lt;-<span class="st"> </span><span class="cf">function</span>(x, shape, scale, <span class="dt">log =</span> <span class="ot">FALSE</span>) {</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="kw">dgamma</span>(x, <span class="dt">shape =</span> shape, <span class="dt">scale =</span> scale, <span class="dt">log =</span> log)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw">suppressWarnings</span>(MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> dfancy, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">20</span>)))</a></code></pre></div>
 <pre><code>##      shape       scale  
 ##   2.1931194   3.1400457 
 ##  (0.2897513) (0.4659625)</code></pre>
 <p>The <strong>stats4</strong> package provides MLE using S4 classes.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nll &lt;-<span class="st"> </span><span class="cf">function</span>(shape, scale) <span class="op">-</span><span class="kw">sum</span>(<span class="kw">dfancy</span>(x, shape, scale, <span class="ot">TRUE</span>))
-<span class="kw">suppressWarnings</span>(fit &lt;-<span class="st"> </span>stats4<span class="op">::</span><span class="kw">mle</span>(nll, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">10</span>)))
-stats4<span class="op">::</span><span class="kw">summary</span>(fit)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">nll &lt;-<span class="st"> </span><span class="cf">function</span>(shape, scale) <span class="op">-</span><span class="kw">sum</span>(<span class="kw">dfancy</span>(x, shape, scale, <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">suppressWarnings</span>(fit &lt;-<span class="st"> </span>stats4<span class="op">::</span><span class="kw">mle</span>(nll, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">10</span>)))</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">stats4<span class="op">::</span><span class="kw">summary</span>(fit)</a></code></pre></div>
 <pre><code>## Maximum likelihood estimation
 ## 
 ## Call:
@@ -181,11 +213,105 @@ stats4<span class="op">::</span><span class="kw">summary</span>(fit)</code></pre
 ## 
 ## -2 log L: 557.1586</code></pre>
 </div>
+<div id="computer-arithmetics" class="section level2">
+<h2><span class="header-section-number">1.2</span> Computer Arithmetics</h2>
+<p>How does a computer represent a number? Computers use switches, which has only two states, on and off, to represent numbers. That is, it uses the binary number system. With a finite (though large) number switches on a computer, not all real numbers are representable. Binary numbers are made of bits, each of which represent a switch. A byte is 8 bits, which represents one character.</p>
+<div id="integers" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Integers</h3>
+<p>An integer on many computers has length 4-byte or 32-bit.
+It is represented by the coefficients <span class="math inline">\(x_i\)</span> in
+<span class="math display">\[
+\sum_{i=1}^{32} x_i 2^{i-1} - 2^{31},
+\]</span>
+where <span class="math inline">\(x_i\)</span> is either 0 or 1.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">imax &lt;-<span class="st"> </span>.Machine<span class="op">$</span>integer.max</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">imax</a></code></pre></div>
+<pre><code>## [1] 2147483647</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">imax <span class="op">+</span><span class="st"> </span>1L</a></code></pre></div>
+<pre><code>## Warning in imax + 1L: NAs produced by integer overflow</code></pre>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">log</span>(imax, <span class="dt">base =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 31</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">u &lt;-<span class="st"> </span>0L</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">b &lt;-<span class="st"> </span>1L</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> 1L<span class="op">:</span>31L) {</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">  u &lt;-<span class="st"> </span>u <span class="op">+</span><span class="st"> </span>b</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">  b &lt;-<span class="st"> </span>b <span class="op">*</span><span class="st"> </span>2L</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">}</a></code></pre></div>
+<pre><code>## Warning in b * 2L: NAs produced by integer overflow</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">u</a></code></pre></div>
+<pre><code>## [1] 2147483647</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L</a></code></pre></div>
+<pre><code>## [1] 1000000000</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L</a></code></pre></div>
+<pre><code>## Warning in 1000L * 1000L * 1000L * 1000L: NAs produced by integer overflow</code></pre>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span><span class="dv">1000</span></a></code></pre></div>
+<pre><code>## [1] 1e+12</code></pre>
+</div>
+<div id="floating-point" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Floating Point</h3>
+<p>A floating point number is represented by
+<span class="math display">\[
+(-1)^{x_0}\left(\sum_{i=1}^t x_i 2^{-i}\right) 2^{k}
+\]</span>
+for <span class="math inline">\(x_i \in \{0, 1\}\)</span>,
+where <span class="math inline">\(k\)</span> is an integer called the exponent,
+<span class="math inline">\(x_0\)</span> is the sign bit.
+The fractional part <span class="math inline">\(\sum_{i=1}^t x_i 2^{-i}\)</span> is the significand. By convention (for unique representation), the exponent is chosen so that the fist digit of the significand is 1, unless it would result in the exponent being out of range.</p>
+<p>A standard double precision representation uses 8 bytes or 64 bits: a sign bit, an 11 bit exponent, and 52 bits for the significand. With 11 bits there are <span class="math inline">\(2^{11} = 2048\)</span> possible values for the exponent, which are usually shifted so that the allowed values range from <span class="math inline">\(-1022\)</span> to 1024, again with one special sign value.</p>
+<p>The IEEE standard for floating point arithmetic calls for basic arithmetic operations to be performed to higher precision, and then rounded to the nearest representable floating point number.</p>
+<p>Arithmetic underflow occurs where the result of a calculation is a smaller number than what the computer can actually represent. Arithmetic overflow occurs when a calculation produces a result that is greater in magnitude than what the computer can represent.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">.Machine<span class="op">$</span>double.eps</a></code></pre></div>
+<pre><code>## [1] 2.2204460492503130808e-16</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">.Machine<span class="op">$</span>double.base <span class="op">^</span><span class="st"> </span>.Machine<span class="op">$</span>double.ulp.digits</a></code></pre></div>
+<pre><code>## [1] 2.2204460492503130808e-16</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>.Machine<span class="op">$</span>double.eps <span class="op">==</span><span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>.Machine<span class="op">$</span>double.base <span class="op">^</span><span class="st"> </span>(.Machine<span class="op">$</span>double.ulp.digits <span class="op">-</span><span class="st"> </span>1L) <span class="op">==</span><span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">## floating point traps</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="fl">.1</span> <span class="op">==</span><span class="st"> </span><span class="fl">.3</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="fl">.3</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a></code></pre></div>
+<pre><code>## [1] 0.099999999999999991673</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">.1</span>) <span class="op">==</span><span class="st"> </span><span class="fl">0.3</span></a></code></pre></div>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">.1</span>)</a></code></pre></div>
+<pre><code>##  [1] 0.00000000000000000000 0.10000000000000000555 0.20000000000000001110
+##  [4] 0.30000000000000004441 0.40000000000000002220 0.50000000000000000000
+##  [7] 0.60000000000000008882 0.70000000000000006661 0.80000000000000004441
+## [10] 0.90000000000000002220 1.00000000000000000000</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">unique</span>(<span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span> <span class="op">-</span><span class="st"> </span><span class="fl">.1</span>, <span class="fl">.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">.2</span>, <span class="fl">.6</span> <span class="op">-</span><span class="st"> </span><span class="fl">.3</span>, <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="fl">.4</span>))</a></code></pre></div>
+<pre><code>## [1] 0.29999999999999998890 0.30000000000000004441 0.29999999999999993339</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span> <span class="op">-</span><span class="st"> </span><span class="fl">.1</span>, <span class="fl">.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">.2</span>, <span class="fl">.6</span> <span class="op">-</span><span class="st"> </span><span class="fl">.3</span>, <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="fl">.4</span>)</a></code></pre></div>
+<pre><code>## [1] 0.29999999999999998890 0.30000000000000004441 0.29999999999999998890
+## [4] 0.29999999999999998890 0.29999999999999993339</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">## largest possible significand</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">u &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> 1L<span class="op">:</span><span class="dv">53</span>) u &lt;-<span class="st"> </span>u <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span>i)</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">u</a></code></pre></div>
+<pre><code>## [1] 0.99999999999999988898</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">## and the largest possible exponent--note that calculating 2^1024</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">## directly overflows</a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">u <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">1023</span></a></code></pre></div>
+<pre><code>## [1] 1.7976931348623157081e+308</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">## next largest floating point number overflows</a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">(u <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">1023</span>) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span>)</a></code></pre></div>
+<pre><code>## [1] Inf</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">## smallest possible mantissa and smallest possible exponent</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span><span class="dv">1022</span>)</a></code></pre></div>
+<pre><code>## [1] 4.9406564584124654418e-324</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span><span class="dv">1022</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+</div>
+</div>
 <div id="exercises" class="section level2">
-<h2><span class="header-section-number">1.2</span> Exercises</h2>
+<h2><span class="header-section-number">1.3</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li><p>Use git to clone the source of Hadley Wickham’s <strong>Advanced R Programming</strong> from his GitHub repository to a local space on your own computer. Build the book using RStudio. During the building process, you may see error messages due to missing tools on your computer. Read the error messages carefully and fix them, until you get the book built. You may need to install some R packages, some fonts, some latex packages, and some building tools for R packages. On Windows, some codes for parallel computing may not work and need to be commented out.</p></li>
-<li>Use <strong>bookdown</strong> or <strong>rmarkdown</strong> to produce a report for the following task. Consider approximation of the distribution function of <span class="math inline">\(N(0, 1)\)</span>,
+<li><p>Use <strong>bookdown</strong> or <strong>rmarkdown</strong> to produce a report for the following task. Consider approximation of the distribution function of <span class="math inline">\(N(0, 1)\)</span>,
 <span class="math display" id="eq:cdf">\[\begin{equation}
 \Phi(t) = \int_{-\infty}^t \frac{1}{\sqrt{2\pi}} e^{-y^2 / 2} dy,
 \tag{1.1}
@@ -194,7 +320,12 @@ by the Monte Carlo methods:
 <span class="math display">\[\begin{equation}
 \hat\Phi(t) = \frac{1}{n} \sum_{i=1}^n I(X_i \le t),
 \end{equation}\]</span>
-<p>where <span class="math inline">\(X_i\)</span>’s are iid <span class="math inline">\(N(0, 1)\)</span> variables. Experiment with the approximation at <span class="math inline">\(n \in \{10^2, 10^3, 10^4\}\)</span> at <span class="math inline">\(t \in \{0.0, 0.67, 0.84, 1.28, 1.65, 2.32, 2.58, 3.09, 3.72\}\)</span> to form a table. The table should include the true value for comparison. Further, repeat the experiment 100 times. Draw box plots of the bias at all <span class="math inline">\(t\)</span>. The report should look like a manuscript, with a title, an abstract, and multiple sections. It should contain at least one math equation, one table, one figure, and one chunk of R code. The template of our Data Science Lab can be helpful: <a href="https://statds.org/template/" class="uri">https://statds.org/template/</a>, the source of which is at <a href="https://github.com/statds/dslab-templates" class="uri">https://github.com/statds/dslab-templates</a>.</p></li>
+where <span class="math inline">\(X_i\)</span>’s are iid <span class="math inline">\(N(0, 1)\)</span> variables.
+Experiment with the approximation at <span class="math inline">\(n \in \{10^2, 10^3, 10^4\}\)</span>
+at <span class="math inline">\(t \in \{0.0, 0.67, 0.84, 1.28, 1.65, 2.32, 2.58, 3.09, 3.72\}\)</span> to form a table.
+The table should include the true value for comparison.
+Further, repeat the experiment 100 times. Draw box plots of the bias at all <span class="math inline">\(t\)</span>.
+The report should look like a manuscript, with a title, an abstract, and multiple sections. It should contain at least one math equation, one table, one figure, and one chunk of R code. The template of our Data Science Lab can be helpful: <a href="https://statds.org/template/" class="uri">https://statds.org/template/</a>, the source of which is at <a href="https://github.com/statds/dslab-templates" class="uri">https://github.com/statds/dslab-templates</a>.</p></li>
 </ol>
 
 </div>
@@ -251,7 +382,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
