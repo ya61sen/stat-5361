@@ -134,6 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#condition-number"><i class="fa fa-check"></i><b>1.2.4</b> Condition Number</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#course-project"><i class="fa fa-check"></i><b>1.4</b> Course Project</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="nla.html"><a href="nla.html"><i class="fa fa-check"></i><b>2</b> Numerical Linear Algebra</a></li>
 <li class="chapter" data-level="3" data-path="optim.html"><a href="optim.html"><i class="fa fa-check"></i><b>3</b> Optimization</a><ul>
@@ -204,7 +205,7 @@ as <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">
 <div id="bisection-method" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Bisection Method</h3>
 <p>The bisection method repeatedly bisects an interval and then selects a subinterval in which a root must lie for further processing. It is a very simple and robust method, but relatively slow.</p>
-<p>The method is applicable for solving the equation <span class="math inline">\(f(x) = 0\)</span> for the real variable <span class="math inline">\(x\)</span>, where <span class="math inline">\(f\)</span> is a continuous function defined on an interval <span class="math inline">\([a, b]\)</span> and <span class="math inline">\(f(a)\)</span> and <span class="math inline">\(f(b)\)</span> have opposite signs. This method is illustrated with an animation using the package <strong>animation</strong>.</p>
+<p>The method is applicable for solving the equation <span class="math inline">\(f(x) = 0\)</span> for the real variable <span class="math inline">\(x\)</span>, where <span class="math inline">\(f\)</span> is a continuous function defined on an interval <span class="math inline">\([a, b]\)</span> and <span class="math inline">\(f(a)\)</span> and <span class="math inline">\(f(b)\)</span> have opposite signs. This method is illustrated with an animation using the package <strong>animation</strong> <span class="citation">(Xie <a href="#ref-R-animation">2017</a>)</span>.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">animation<span class="op">::</span><span class="kw">bisection.method</span>()</a></code></pre></div>
 <p><img src="stat5361-book_files/figure-html/bisection-1.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-2.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-3.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-4.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-5.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-6.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-7.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-8.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-9.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-10.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-11.png" width="672" /></p>
 </div>
@@ -289,6 +290,12 @@ Try the same starting points as above.</li>
 <li><p>Comment on the results from different methods (speed, stability, etc.).</p></li>
 </ul>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-R-animation">
+<p>Xie, Yihui. 2017. <em>Animation: A Gallery of Animations in Statistics and Utilities to Create Animations</em>. <a href="https://CRAN.R-project.org/package=animation" class="uri">https://CRAN.R-project.org/package=animation</a>.</p>
 </div>
 </div>
             </section>
