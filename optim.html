@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-09-12">
+<meta name="date" content="2018-09-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -137,7 +137,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="nla.html"><a href="nla.html"><i class="fa fa-check"></i><b>2</b> Numerical Linear Algebra</a></li>
 <li class="chapter" data-level="3" data-path="optim.html"><a href="optim.html"><i class="fa fa-check"></i><b>3</b> Optimization</a><ul>
-<li class="chapter" data-level="3.1" data-path="optim.html"><a href="optim.html#univariate-optimizations"><i class="fa fa-check"></i><b>3.1</b> Univariate Optimizations</a></li>
+<li class="chapter" data-level="3.1" data-path="optim.html"><a href="optim.html#univariate-optimizations"><i class="fa fa-check"></i><b>3.1</b> Univariate Optimizations</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="optim.html"><a href="optim.html#bisection-method"><i class="fa fa-check"></i><b>3.1.1</b> Bisection Method</a></li>
+<li class="chapter" data-level="3.1.2" data-path="optim.html"><a href="optim.html#newtons-method"><i class="fa fa-check"></i><b>3.1.2</b> Newton’s Method</a></li>
+<li class="chapter" data-level="3.1.3" data-path="optim.html"><a href="optim.html#fixed-point-iteration"><i class="fa fa-check"></i><b>3.1.3</b> Fixed Point Iteration</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="optim.html"><a href="optim.html#exercises-1"><i class="fa fa-check"></i><b>3.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="em-algorithm.html"><a href="em-algorithm.html"><i class="fa fa-check"></i><b>4</b> EM Algorithm</a></li>
 <li class="chapter" data-level="5" data-path="random-number-generation.html"><a href="random-number-generation.html"><i class="fa fa-check"></i><b>5</b> Random Number Generation</a></li>
@@ -181,9 +186,10 @@ i.e., the derivative of the loglikelihood function equated to zero.
 From mathematical statistics, it is known that, under certain regularity
 conditions,
 <span class="math display">\[\begin{align*}
-E \frac{\partial}{\partial \theta} \log f(X; \theta) &amp;= 0,\\
-E \frac{\partial}{\partial \theta} \log f(X; \theta)
-\left[\frac{\partial}{\partial \theta}\ log f(X; \theta) \right]^{\top} &amp;= - E
+\mathbb{E}\frac{\partial}{\partial \theta} \log f(X; \theta) &amp;= 0,\\
+\mathbb{E}\frac{\partial}{\partial \theta} \log f(X; \theta)
+\left[\frac{\partial}{\partial \theta}\ log f(X; \theta) \right]^{\top} 
+&amp;= - \mathbb{E}
 \frac{\partial^2}{\partial \theta \partial \theta^{\top}} \log f(X; \theta).
 \end{align*}\]</span>
 The expectation in the second equation is known as the Fisher information
@@ -194,10 +200,94 @@ as <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">
 <p>More generally in Statistics, M-estimators are a broad class of extremum estimators obtained by maximizing an data dependent objective function. Both non-linear least squares and maximum likelihood estimation are special cases of M-estimators. The definition of M-estimators was motivated by robust statistics, which contributed new types of M-estimators. When the objective function is smooth, the M-estimator can be obtained by solving the corresponding “score” equation. Clearly, optimization or roo-finding are very important in Statistics.</p>
 <div id="univariate-optimizations" class="section level2">
 <h2><span class="header-section-number">3.1</span> Univariate Optimizations</h2>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>x <span class="op">^</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">+</span><span class="st">  </span><span class="fl">0.1</span> <span class="op">*</span><span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="dv">5</span>)<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sin</span>(<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>x)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="kw">curve</span>(<span class="kw">g</span>(x), <span class="dv">0</span>, <span class="dv">10</span>)</a></code></pre></div>
-<p><img src="stat5361-book_files/figure-html/g-1.png" width="672" /></p>
+<p>Optimization and root finding are closely related. Consider maximization of a smooth and differentiable function <span class="math inline">\(g(x)\)</span>. A necessary condition at the maximum is <span class="math inline">\(f(x) = g&#39;(x) = 0\)</span>. Univariate illustrations help to gain insights about the ideas.</p>
+<div id="bisection-method" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Bisection Method</h3>
+<p>The bisection method repeatedly bisects an interval and then selects a subinterval in which a root must lie for further processing. It is a very simple and robust method, but relatively slow.</p>
+<p>The method is applicable for solving the equation <span class="math inline">\(f(x) = 0\)</span> for the real variable <span class="math inline">\(x\)</span>, where <span class="math inline">\(f\)</span> is a continuous function defined on an interval <span class="math inline">\([a, b]\)</span> and <span class="math inline">\(f(a)\)</span> and <span class="math inline">\(f(b)\)</span> have opposite signs. This method is illustrated with an animation using the package <strong>animation</strong>.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">animation<span class="op">::</span><span class="kw">bisection.method</span>()</a></code></pre></div>
+<p><img src="stat5361-book_files/figure-html/bisection-1.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-2.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-3.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-4.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-5.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-6.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-7.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-8.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-9.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-10.png" width="672" /><img src="stat5361-book_files/figure-html/bisection-11.png" width="672" /></p>
+</div>
+<div id="newtons-method" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Newton’s Method</h3>
+<p>A fast approach to find roots of a differentiable function <span class="math inline">\(f(x)\)</span>. The methods starts from some initial value <span class="math inline">\(x_0\)</span>, and for <span class="math inline">\(t = 0, 1, \ldots\)</span>, compute
+<span class="math display">\[\begin{align*}
+  x_{t+1} = x_t  - \frac{f(x_t)}{f&#39;(x_t)}
+\end{align*}\]</span>
+until <span class="math inline">\(x_t\)</span> converges. The method is based on a linear expansion of <span class="math inline">\(f(x)\)</span>. The method is also known as Newton–Raphson iteration. It needs an initial value <span class="math inline">\(x_0\)</span>. If <span class="math inline">\(f(x) = 0\)</span> has multiple solutions, the end result depends on <span class="math inline">\(x_0\)</span>.</p>
+<p>Applied to optimization of <span class="math inline">\(g\)</span>, this method requires the Hessian <span class="math inline">\(g&#39;&#39;\)</span>,
+which can be difficult to obtain, especially for multivariate functions.
+Many variants of Newton’s method avoid the computation of the Hessian.</p>
+<p>For example, to obtain MLE with likelihood <span class="math inline">\(l(\theta)\)</span>, Fisher scoring replaces <span class="math inline">\(-l&#39;&#39;(\theta_t)\)</span> with <span class="math inline">\(I(\theta_t)\)</span>. Generally, one uses Fisher scoring in the beginning to make rapid improvements, and Newton’s method for refinement near the end.</p>
+<p>The secant method approximates <span class="math inline">\(f&#39;(x_t)\)</span> by
+<span class="math display">\[\begin{align*}
+  \frac{f(x_t) - f(x_{t-1})}{x_t - x_{t-1}}.
+\end{align*}\]</span>
+Given initial values <span class="math inline">\(x_0\)</span> and <span class="math inline">\(x_1\)</span>, the iteration is
+<span class="math display">\[\begin{align*}
+  x_{t+1} = x_t - \frac{f(x_t)(x_t- x_{t-1})}{f(x_t) - f(x_{t-1})}.
+\end{align*}\]</span></p>
+</div>
+<div id="fixed-point-iteration" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Fixed Point Iteration</h3>
+<p>A fixed point of a function is a point whose evaluation by that
+function equals to itself, i.e., <span class="math inline">\(x=G(x)\)</span>.</p>
+<p>Fixed point iteration: the natural way of hunting for a fixed point
+is to use <span class="math inline">\(x_{t+1}=G(x_t)\)</span>.</p>
+
+<div class="definition">
+<span id="def:contractive" class="definition"><strong>Definition 3.1  </strong></span>A function <span class="math inline">\(G\)</span> is contractive on <span class="math inline">\([a,b]\)</span> if
+<span class="math display">\[\begin{align*}
+  (1).\,\, &amp; G(x)\in [a,b] \mbox{ whenever } x\in [a,b],\\
+  (2).\,\, &amp; |G(x_1) - G(x_2)| \leq \lambda |x_1-x_2| \mbox{ for all } x_1,x_2\in [a,b] \mbox{ and some } \lambda\in [0,1).
+\end{align*}\]</span>
+</div>
+
+
+<div class="theorem">
+<span id="thm:fixedPoint" class="theorem"><strong>Theorem 3.1  </strong></span>If <span class="math inline">\(G\)</span> is contractive on <span class="math inline">\([a,b]\)</span>, then there is a unique fixed point <span class="math inline">\(x^*\in [a,b]\)</span>, and the fixed point iteration convergence to it when starting inside the interval.
+</div>
+
+<p>Convergence: <span class="math inline">\(|x_{t+1}-x_{t}|=|G(x_t)-G(x_{t-1})|\leq \lambda |x_t - x_{t-1}|\leq \lambda^{t}|x_1-x_0| \rightarrow 0\)</span>, as <span class="math inline">\(t\rightarrow \infty\)</span>. It follows that <span class="math inline">\(\{x_t\}\)</span> convergent to a limit <span class="math inline">\(x^*\)</span>.</p>
+<p>Application in root finding: for solving <span class="math inline">\(f(x)=0\)</span>, we can simply let <span class="math inline">\(G(x) = x + \alpha f(x)\)</span>, where <span class="math inline">\(\alpha \neq 0\)</span> is a constant.</p>
+<p>Required Lipschitz condition: <span class="math inline">\(|x - y + \alpha [f(x) - f(y)]| \le \lambda|x-y|\)</span>, for some <span class="math inline">\(\lambda \in [0,1)\)</span> and for all <span class="math inline">\(x,y\in [a,b]\)</span>. This holds if <span class="math inline">\(|G&#39;(x)|\leq \lambda\)</span> for some <span class="math inline">\(\lambda \in [0,1)\)</span> and for all <span class="math inline">\(x\in [a,b]\)</span>, i.e., <span class="math inline">\(|1+\alpha f&#39;(x)|\leq\lambda\)</span>. (use mean value theorem.)</p>
+<p>Newton’s methods: <span class="math inline">\(G(x) = x - f(x)/f&#39;(x)\)</span>. So it is as if <span class="math inline">\(\alpha_t\)</span> is chosen adaptively as <span class="math inline">\(\alpha_t=-1/f&#39;(x_t)\)</span>. This leads to a faster convergence order (quadratic).</p>
+</div>
+</div>
+<div id="exercises-1" class="section level2">
+<h2><span class="header-section-number">3.2</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Consider estimating the location parameter of a Cauchy distribution with a known scale parameter. The density function is
+<span class="math display">\[\begin{align*}
+  f(x; \theta) = \frac{1}{\pi[1 + (x - \theta)^2]}, 
+  \quad x \in R, \quad \theta \in R.
+\end{align*}\]</span>
+Let <span class="math inline">\(X_1, \ldots, X_n\)</span> be a random sample of size <span class="math inline">\(n\)</span> and <span class="math inline">\(\ell(\theta)\)</span> the log-likelihood function of <span class="math inline">\(\theta\)</span> based on the sample.</li>
+</ol>
+<ul>
+<li><p>Show that
+<span class="math display">\[\begin{align*}
+\ell(\theta)
+&amp;= -n\ln \pi - \sum_{i=1}^n \ln [1+(\theta-X_i)^2], \\
+\ell&#39;(\theta)
+&amp;= -2 \sum_{i=1}^n \frac{\theta-X_i}{1+(\theta-X_i)^2}, \\
+\ell&#39;&#39;(\theta)
+&amp;= -2 \sum_{i=1}^n \frac{1-(\theta-X_i)^2}{[1+(\theta-X_i)^2]^2},
+\\
+I_n(\theta) &amp;= \frac{4n}{\pi}
+\int_{-\infty}^\infty \frac{x^2\,\mathrm{d}x}{(1+x^2)^3}
+= n/2,
+\end{align*}\]</span>
+where <span class="math inline">\(I_n\)</span> is the Fisher information of this sample.</p></li>
+<li>Set the random seed as <span class="math inline">\(20180909\)</span> and generate a random sample of size <span class="math inline">\(n = 10\)</span> with <span class="math inline">\(\theta = 5\)</span>. Implement a loglikelihood function and plot against <span class="math inline">\(\theta\)</span>.</li>
+<li>Find the MLE of <span class="math inline">\(\theta\)</span> using the Newton–Raphson method with initial values on a grid starting from <span class="math inline">\(-10\)</span> to <span class="math inline">\(20\)</span> with increment <span class="math inline">\(0.5\)</span>. Summarize the results.</li>
+<li>Apply fixed-point iterations using
+<span class="math inline">\(G(\theta)=\alpha \ell&#39;(\theta) + \theta\)</span>,
+with scaling choices of <span class="math inline">\(\alpha \in \{1, 0.64, 0.25\}\)</span> and the same initial values as above.</li>
+<li>First use Fisher scoring to find the MLE for <span class="math inline">\(\theta\)</span>, then refine the estimate by running Newton-Raphson method.
+Try the same starting points as above.</li>
+<li><p>Comment on the results from different methods (speed, stability, etc.).</p></li>
+</ul>
 
 </div>
 </div>
