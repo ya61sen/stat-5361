@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-09-13">
+<meta name="date" content="2018-09-14">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -169,7 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">STAT 5361: Statistical Computing, Fall 2018</h1>
 <h4 class="author"><em>Jun Yan</em></h4>
-<h4 class="date"><em>2018-09-13</em></h4>
+<h4 class="date"><em>2018-09-14</em></h4>
 </div>
 <div id="prelim" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
@@ -458,8 +458,7 @@ where <span class="math inline">\(X_i\)</span>’s are iid <span class="math inl
 Experiment with the approximation at <span class="math inline">\(n \in \{10^2, 10^3, 10^4\}\)</span> at <span class="math inline">\(t \in \{0.0, 0.67, 0.84, 1.28, 1.65, 2.32, 2.58, 3.09, 3.72\}\)</span> to form a table.</p></li>
 </ol>
 <p>The table should include the true value for comparison.
-Further, repeat the experiment 100 times. Draw box plots of the bias at all <span class="math inline">\(t\)</span>.
-The report should look like a manuscript, with a title, an abstract, and multiple sections. It should contain at least one math equation, one table, one figure, and one chunk of R code. The template of our Data Science Lab can be helpful: <a href="https://statds.org/template/" class="uri">https://statds.org/template/</a>, the source of which is at <a href="https://github.com/statds/dslab-templates" class="uri">https://github.com/statds/dslab-templates</a>.</p>
+Further, repeat the experiment 100 times. Draw box plots of the 100 approximation errors at each <span class="math inline">\(t\)</span> using <strong>ggplot2</strong> <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-gglot2"><strong>???</strong></span>)</span> for each <span class="math inline">\(n\)</span>. The report should look like a manuscript, with a title, an abstract, and multiple sections. It should contain at least one math equation, one table, one figure, and one chunk of R code. The template of our Data Science Lab can be helpful: <a href="https://statds.org/template/" class="uri">https://statds.org/template/</a>, the source of which is at <a href="https://github.com/statds/dslab-templates" class="uri">https://github.com/statds/dslab-templates</a>.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Explain how <code>.Machine$double.xmax</code>, <code>.Machine$double.xmin</code>, <code>.Machine$double.eps</code>, and <code>.Machine@double.neg.eps</code> are defined using the 64-bit double precision floating point arithmetic.</li>
 </ol>
