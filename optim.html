@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-09-14">
+<meta name="date" content="2018-09-21">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -143,7 +143,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.2" data-path="optim.html"><a href="optim.html#newtons-method"><i class="fa fa-check"></i><b>3.1.2</b> Newton’s Method</a></li>
 <li class="chapter" data-level="3.1.3" data-path="optim.html"><a href="optim.html#fixed-point-iteration"><i class="fa fa-check"></i><b>3.1.3</b> Fixed Point Iteration</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="optim.html"><a href="optim.html#exercises-1"><i class="fa fa-check"></i><b>3.2</b> Exercises</a></li>
+<li class="chapter" data-level="3.2" data-path="optim.html"><a href="optim.html#multivariate-optimization"><i class="fa fa-check"></i><b>3.2</b> Multivariate Optimization</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="optim.html"><a href="optim.html#newton-raphson-method"><i class="fa fa-check"></i><b>3.2.1</b> Newton-Raphson Method</a></li>
+<li class="chapter" data-level="3.2.2" data-path="optim.html"><a href="optim.html#variants-of-newton-raphson-method"><i class="fa fa-check"></i><b>3.2.2</b> Variants of Newton-Raphson Method</a></li>
+<li class="chapter" data-level="3.2.3" data-path="optim.html"><a href="optim.html#nelder-mead-simplex-algorithm"><i class="fa fa-check"></i><b>3.2.3</b> Nelder-Mead (Simplex) Algorithm</a></li>
+<li class="chapter" data-level="3.2.4" data-path="optim.html"><a href="optim.html#optimization-with-r"><i class="fa fa-check"></i><b>3.2.4</b> Optimization with R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="optim.html"><a href="optim.html#exercises-1"><i class="fa fa-check"></i><b>3.3</b> Exercises</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="optim.html"><a href="optim.html#cauchy-with-unknown-location."><i class="fa fa-check"></i><b>3.3.1</b> Cauchy with unknown location.</a></li>
+<li class="chapter" data-level="3.3.2" data-path="optim.html"><a href="optim.html#many-local-maxima"><i class="fa fa-check"></i><b>3.3.2</b> Many local maxima</a></li>
+<li class="chapter" data-level="3.3.3" data-path="optim.html"><a href="optim.html#modeling-beetle-data"><i class="fa fa-check"></i><b>3.3.3</b> Modeling beetle data</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="em-algorithm.html"><a href="em-algorithm.html"><i class="fa fa-check"></i><b>4</b> EM Algorithm</a></li>
 <li class="chapter" data-level="5" data-path="random-number-generation.html"><a href="random-number-generation.html"><i class="fa fa-check"></i><b>5</b> Random Number Generation</a></li>
@@ -168,11 +178,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="optim" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Optimization</h1>
-<p>Recall the MLE example in Chapter <a href="index.html#prelim">1</a>.
-Consider a random sample <span class="math inline">\(X_1, \ldots, X_n\)</span> of size <span class="math inline">\(n\)</span> coming from a
-univariate distribution with density function <span class="math inline">\(f(x| \theta)\)</span>, where
-<span class="math inline">\(\theta\)</span> is a parameter vector. The MLE <span class="math inline">\(\hat\theta_n\)</span> of the unknown
-parameter <span class="math inline">\(\theta\)</span> is obtained by maximizing the loglikelihood
+<p>Recall the MLE example in Chapter <a href="index.html#prelim">1</a>. Consider a random sample <span class="math inline">\(X_1, \ldots, X_n\)</span> of size <span class="math inline">\(n\)</span> coming from a
+univariate distribution with density function
+<span class="math inline">\(f(x | \theta)\)</span>, where <span class="math inline">\(\theta\)</span> is a parameter vector. The MLE <span class="math inline">\(\hat\theta_n\)</span> of the unknown parameter <span class="math inline">\(\theta\)</span> is obtained by maximizing the loglikelihood
 function
 <span class="math display">\[
 l(\theta) = \sum_{i=1}^n \log f(X_i | \theta)
@@ -198,7 +206,7 @@ The expectation in the second equation is known as the Fisher information
 as <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">\(\hat\theta_n\)</span> is consistent for <span class="math inline">\(\theta\)</span> and
 <span class="math inline">\(\sqrt{n} (\hat\theta_n - \theta)\)</span> converges in distribution to
 <span class="math inline">\(N(0, I^{-1}(\theta))\)</span>. The asymptotic variance of <span class="math inline">\(\hat\theta\)</span> can be estimated by inverting the observed Fisher information matrix <span class="math inline">\(l&#39;&#39;(\hat\theta_n)\)</span>.</p>
-<p>More generally in Statistics, M-estimators are a broad class of extremum estimators obtained by maximizing an data dependent objective function. Both non-linear least squares and maximum likelihood estimation are special cases of M-estimators. The definition of M-estimators was motivated by robust statistics, which contributed new types of M-estimators. When the objective function is smooth, the M-estimator can be obtained by solving the corresponding “score” equation. Clearly, optimization or roo-finding are very important in Statistics.</p>
+<p>More generally in Statistics, M-estimators are a broad class of extremum estimators obtained by maximizing an data dependent objective function. Both non-linear least squares and maximum likelihood estimation are special cases of M-estimators. The definition of M-estimators was motivated by robust statistics, which contributed new types of M-estimators. When the objective function is smooth, the M-estimator can be obtained by solving the corresponding “score” equation. Clearly, optimization or root-finding are very important in Statistics.</p>
 <div id="univariate-optimizations" class="section level2">
 <h2><span class="header-section-number">3.1</span> Univariate Optimizations</h2>
 <p>Optimization and root finding are closely related. Consider maximization of a smooth and differentiable function <span class="math inline">\(g(x)\)</span>. A necessary condition at the maximum is <span class="math inline">\(f(x) = g&#39;(x) = 0\)</span>. Univariate illustrations help to gain insights about the ideas.</p>
@@ -255,41 +263,362 @@ is to use <span class="math inline">\(x_{t+1}=G(x_t)\)</span>.</p>
 <p>Newton’s methods: <span class="math inline">\(G(x) = x - f(x)/f&#39;(x)\)</span>. So it is as if <span class="math inline">\(\alpha_t\)</span> is chosen adaptively as <span class="math inline">\(\alpha_t=-1/f&#39;(x_t)\)</span>. This leads to a faster convergence order (quadratic).</p>
 </div>
 </div>
+<div id="multivariate-optimization" class="section level2">
+<h2><span class="header-section-number">3.2</span> Multivariate Optimization</h2>
+<p>Consider maximizing a real-valued objective function <span class="math inline">\(g(x)\)</span> of <span class="math inline">\(p\)</span>-dimensional vector <span class="math inline">\(x\)</span>.</p>
+<div id="newton-raphson-method" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Newton-Raphson Method</h3>
+<p>The Newton-Raphson method is a generalization of univariate Newton’s root finding algorithm to the multivariate case.</p>
+</div>
+<div id="variants-of-newton-raphson-method" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Variants of Newton-Raphson Method</h3>
+<p>The motivation is to avoid the calculation of the Hessian matrix in updatings with the form
+<span class="math display">\[
+x^{(t + 1)} = x^{(t)} - (M^{(t)})^{-1} g&#39;(x),
+\]</span>
+where <span class="math inline">\(g&#39;\)</span> is the gradient of <span class="math inline">\(g\)</span> and <span class="math inline">\(M\)</span> is a substitute of <span class="math inline">\(g&#39;&#39;(x)\)</span>.</p>
+<div id="fisher-scoring" class="section level4">
+<h4><span class="header-section-number">3.2.2.1</span> Fisher Scoring</h4>
+<p>Choose <span class="math inline">\(M\)</span> as the negative Fisher information matrix. For location-families, it can be shown that the information matrix is free of the location parameter.</p>
+</div>
+<div id="steepest-ascent" class="section level4">
+<h4><span class="header-section-number">3.2.2.2</span> Steepest Ascent</h4>
+<p>Choose <span class="math inline">\(M = \alpha^{(t)} I_p\)</span> for <span class="math inline">\(\alpha^{(t)} &gt; 0\)</span> so the updating in the direction of he steepest ascent.</p>
+</div>
+<div id="discrete-newton" class="section level4">
+<h4><span class="header-section-number">3.2.2.3</span> Discrete Newton</h4>
+<p>Approximate the Hessian matrix with finite-difference quotients.</p>
+</div>
+<div id="fixed-point-iteration-1" class="section level4">
+<h4><span class="header-section-number">3.2.2.4</span> Fixed-Point Iteration</h4>
+<p>Choose <span class="math inline">\(M^{(t)} = M\)</span> for all <span class="math inline">\(t\)</span>. An example is <span class="math inline">\(M = g&#39;&#39;(x_0)\)</span>.</p>
+</div>
+<div id="quasi-newton" class="section level4">
+<h4><span class="header-section-number">3.2.2.5</span> Quasi-Newton</h4>
+<p>Rank-one or rank-two update. The celebrated BFGS is a rank-two update method. Box constraints can be allowed with L-BFGS-B.</p>
+</div>
+<div id="coordinate-ascent" class="section level4">
+<h4><span class="header-section-number">3.2.2.6</span> Coordinate Ascent</h4>
+</div>
+<div id="conjugate-gradient" class="section level4">
+<h4><span class="header-section-number">3.2.2.7</span> Conjugate Gradient</h4>
+</div>
+<div id="gauss-seidel" class="section level4">
+<h4><span class="header-section-number">3.2.2.8</span> Gauss-Seidel</h4>
+</div>
+<div id="gauss-newton" class="section level4">
+<h4><span class="header-section-number">3.2.2.9</span> Gauss-Newton</h4>
+</div>
+</div>
+<div id="nelder-mead-simplex-algorithm" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Nelder-Mead (Simplex) Algorithm</h3>
+<p>Not even the gradient is needed.
+Possible moves are: reflection; expansion; outer contraction; inner contraction; shrinkage.</p>
+<p>Consider minimizing this simple function.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">f1 &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">  x1 &lt;-<span class="st"> </span>x[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">  x2 &lt;-<span class="st"> </span>x[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">  x1<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>x2<span class="op">^</span><span class="dv">2</span>  </a>
+<a class="sourceLine" id="cb67-5" data-line-number="5">}</a></code></pre></div>
+<p>Apparently the minimizer is <span class="math inline">\((0, 0)\)</span>. Let’s track all the points at which the function is evaluated in the Nelder-Mead algorithm.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">trace</span>(f1, <span class="dt">exit =</span> <span class="kw">quote</span>(<span class="kw">print</span>(<span class="kw">c</span>(<span class="kw">returnValue</span>(), x))))</a></code></pre></div>
+<pre><code>## [1] &quot;f1&quot;</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>), f1, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">trace =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<pre><code>##   Nelder-Mead direct search function minimizer
+## Tracing fn(par, ...) on exit 
+## [1] 4 1 1
+## function value for initial parameters = 4.000000
+##   Scaled convergence tolerance is 5.96046e-08
+## Stepsize computed as 0.100000
+## Tracing fn(par, ...) on exit 
+## [1] 4.21 1.10 1.00
+## Tracing fn(par, ...) on exit 
+## [1] 4.63 1.00 1.10
+## BUILD              3 4.630000 4.000000
+## Tracing fn(par, ...) on exit 
+## [1] 3.64 1.10 0.90
+## Tracing fn(par, ...) on exit 
+## [1] 3.2425 1.1500 0.8000
+## EXTENSION          5 4.210000 3.242500
+## Tracing fn(par, ...) on exit 
+## [1] 3.0225 1.0500 0.8000
+## Tracing fn(par, ...) on exit 
+## [1] 2.520625 1.025000 0.700000
+## EXTENSION          7 4.000000 2.520625
+## Tracing fn(par, ...) on exit 
+## [1] 2.130625 1.175000 0.500000
+## Tracing fn(par, ...) on exit 
+## [1] 1.78140625 1.26250000 0.25000000
+## EXTENSION          9 3.242500 1.781406
+## Tracing fn(par, ...) on exit 
+## [1] 1.36140625 1.13750000 0.15000000
+## Tracing fn(par, ...) on exit 
+## [1]  1.371601563  1.131250000 -0.175000000
+## REFLECTION        11 2.520625 1.361406
+## Tracing fn(par, ...) on exit 
+## [1]  2.160625  1.375000 -0.300000
+## Tracing fn(par, ...) on exit 
+## [1]  1.66515625  1.28750000 -0.05000000
+## LO-REDUCTION      13 1.781406 1.361406
+## Tracing fn(par, ...) on exit 
+## [1]  1.41890625  1.16250000 -0.15000000
+## Tracing fn(par, ...) on exit 
+## [1]  1.41765625  1.18750000 -0.05000000
+## LO-REDUCTION      15 1.665156 1.361406
+## Tracing fn(par, ...) on exit 
+## [1] 1.14390625 1.03750000 0.15000000
+## Tracing fn(par, ...) on exit 
+## [1] 1.02015625 0.91250000 0.25000000
+## EXTENSION         17 1.417656 1.020156
+## Tracing fn(par, ...) on exit 
+## [1] 1.35140625 0.86250000 0.45000000
+## Tracing fn(par, ...) on exit 
+## [1] 1.207539063 0.943750000 0.325000000
+## LO-REDUCTION      19 1.361406 1.020156
+## Tracing fn(par, ...) on exit 
+## [1] 1.058476563 0.718750000 0.425000000
+## Tracing fn(par, ...) on exit 
+## [1] 1.058791504 0.823437500 0.356250000
+## LO-REDUCTION      21 1.207539 1.020156
+## Tracing fn(par, ...) on exit 
+## [1] 0.84015625 0.68750000 0.35000000
+## Tracing fn(par, ...) on exit 
+## [1] 0.7071191406 0.5593750000 0.3625000000
+## EXTENSION         23 1.058477 0.707119
+## Tracing fn(par, ...) on exit 
+## [1] 0.6726660156 0.7531250000 0.1875000000
+## Tracing fn(par, ...) on exit 
+## [1] 0.6075610352 0.7703125000 0.0687500000
+## EXTENSION         25 1.020156 0.607561
+## Tracing fn(par, ...) on exit 
+## [1] 0.2726000977 0.4171875000 0.1812500000
+## Tracing fn(par, ...) on exit 
+## [1] 0.0934576416 0.1695312500 0.1468750000
+## EXTENSION         27 0.707119 0.093458
+## Tracing fn(par, ...) on exit 
+## [1]  0.2094732666  0.3804687500 -0.1468750000
+## Tracing fn(par, ...) on exit 
+## [1]  0.1819354630  0.4251953125 -0.0195312500
+## LO-REDUCTION      29 0.607561 0.093458
+## Tracing fn(par, ...) on exit 
+## [1]  0.04113010406 -0.17558593750  0.05859375000
+## Tracing fn(par, ...) on exit 
+## [1]  0.4291896152 -0.6485351562  0.0535156250
+## REFLECTION        31 0.181935 0.041130
+## Tracing fn(par, ...) on exit 
+## [1]  0.3378515625 -0.4312500000  0.2250000000
+## Tracing fn(par, ...) on exit 
+## [1] 0.04974851847 0.21108398438 0.04160156250
+## HI-REDUCTION      33 0.093458 0.041130
+## Tracing fn(par, ...) on exit 
+## [1]  0.02450187922 -0.13403320312 -0.04667968750
+## Tracing fn(par, ...) on exit 
+## [1]  0.1434302193 -0.2858154297 -0.1434570313
+## REFLECTION        35 0.049749 0.024502
+## Tracing fn(par, ...) on exit 
+## [1]  0.2737757874 -0.5207031250 -0.0296875000
+## Tracing fn(par, ...) on exit 
+## [1] 0.002488067299 0.028137207031 0.023779296875
+## HI-REDUCTION      37 0.041130 0.002488
+## Tracing fn(par, ...) on exit 
+## [1]  0.02478057280  0.06968994141 -0.08149414063
+## Tracing fn(par, ...) on exit 
+## [1]  0.006549060354  0.008370971680 -0.046472167969
+## LO-REDUCTION      39 0.024502 0.002488
+## Tracing fn(par, ...) on exit 
+## [1] 0.03081046500 0.17054138184 0.02398681641
+## Tracing fn(par, ...) on exit 
+## [1]  0.005876474013 -0.057889556885 -0.029013061523
+## HI-REDUCTION      41 0.006549 0.002488
+## Tracing fn(par, ...) on exit 
+## [1]  0.00655520537 -0.03812332153  0.04123840332
+## Tracing fn(par, ...) on exit 
+## [1]  0.001817880561 -0.003252601624 -0.024544525146
+## HI-REDUCTION      43 0.005876 0.001818
+## Tracing fn(par, ...) on exit 
+## [1] 0.009245382194 0.082774162292 0.028247833252
+## Tracing fn(par, ...) on exit 
+## [1]  0.001164442539 -0.022723627090 -0.014697837830
+## HI-REDUCTION      45 0.002488 0.001164
+## Tracing fn(par, ...) on exit 
+## [1]  0.01484345276 -0.05411343575 -0.06302165985
+## Tracing fn(par, ...) on exit 
+## [1] 7.034119489e-05 7.574546337e-03 2.079057693e-03
+## HI-REDUCTION      47 0.001818 0.000070
+## Tracing fn(par, ...) on exit 
+## [1]  0.0005681963978 -0.0118964791298  0.0119257450104
+## Tracing fn(par, ...) on exit 
+## [1]  0.0001184377323 -0.0097355097532  0.0028081774712
+## LO-REDUCTION      49 0.001164 0.000070
+## Tracing fn(par, ...) on exit 
+## [1] 0.00157354839 0.02056266367 0.01958507299
+## Tracing fn(par, ...) on exit 
+## [1]  0.0002542833343 -0.0119020543992 -0.0061271101236
+## HI-REDUCTION      51 0.000254 0.000070
+## Tracing fn(par, ...) on exit 
+## [1] 0.0004588362599 0.0097410909832 0.0110143452883
+## Tracing fn(par, ...) on exit 
+## [1]  5.231264892e-05 -6.491268054e-03 -1.841746271e-03
+## HI-REDUCTION      53 0.000118 0.000052
+## Tracing fn(par, ...) on exit 
+## [1]  0.0001368742313  0.0108187880367 -0.0025708660483
+## Tracing fn(par, ...) on exit 
+## [1]  2.755657856e-05 -4.596935306e-03  1.463416591e-03
+## HI-REDUCTION      55 0.000070 0.000028
+## Tracing fn(par, ...) on exit 
+## [1]  0.0003664144843 -0.0186627496965 -0.0024573873729
+## Tracing fn(par, ...) on exit 
+## [1] 3.709447626e-06 1.015222329e-03 9.449464269e-04
+## HI-REDUCTION      57 0.000052 0.000004
+## Tracing fn(par, ...) on exit 
+## [1] 6.265579765e-05 2.909555077e-03 4.250109289e-03
+## Tracing fn(par, ...) on exit 
+## [1]  1.745326335e-05 -4.141062271e-03 -3.187823808e-04
+## HI-REDUCTION      59 0.000028 0.000004
+## Tracing fn(par, ...) on exit 
+## [1]  4.267097041e-06  1.471095363e-03 -8.372525452e-04
+## Tracing fn(par, ...) on exit 
+## [1]  2.081739918e-07 -4.591230390e-05 -2.620852611e-04
+## LO-REDUCTION      61 0.000017 0.000000
+## Tracing fn(par, ...) on exit 
+## [1] 2.912577439e-05 5.110372296e-03 1.001643547e-03
+## Tracing fn(par, ...) on exit 
+## [1]  3.342713216e-06 -1.828203629e-03  1.132410107e-05
+## HI-REDUCTION      63 0.000004 0.000000
+## Tracing fn(par, ...) on exit 
+## [1]  1.263742549e-05 -2.889338262e-03 -1.195707587e-03
+## Tracing fn(par, ...) on exit 
+## [1] 5.052935499e-07 3.908218105e-05 4.097829235e-04
+## HI-REDUCTION      65 0.000003 0.000000
+## Tracing fn(par, ...) on exit 
+## [1] 3.373194695e-06 1.821373506e-03 1.363735613e-04
+## Tracing fn(par, ...) on exit 
+## [1]  8.441475784e-07 -9.158093454e-04  4.258646613e-05
+## HI-REDUCTION      67 0.000001 0.000000
+## Tracing fn(par, ...) on exit 
+## [1] 8.593883177e-07 9.089792225e-04 1.051111963e-04
+## Tracing fn(par, ...) on exit 
+## [1]  2.214112614e-07 -4.596122034e-04  5.821764866e-05
+## HI-REDUCTION      69 0.000001 0.000000
+## Tracing fn(par, ...) on exit 
+## [1]  1.426297385e-06 -5.446066884e-04 -6.136505358e-04
+## Tracing fn(par, ...) on exit 
+## [1]  8.249310260e-08 -1.068400363e-04  1.539245586e-04
+## HI-REDUCTION      71 0.000000 0.000000
+## Tracing fn(par, ...) on exit 
+## [1]  1.772082428e-07  3.068598632e-04 -1.663783511e-04
+## Tracing fn(par, ...) on exit 
+## [1]  4.973221276e-08  1.152418466e-04 -1.102293512e-04
+## LO-REDUCTION      73 0.000000 0.000000
+## Tracing fn(par, ...) on exit 
+## [1] 2.834551078e-07 5.431411415e-05 3.057804685e-04
+## Tracing fn(par, ...) on exit 
+## [1]  4.372055919e-08 -2.085569939e-05 -1.201188287e-04
+## Exiting from Nelder Mead minimizer
+##     75 function evaluations used</code></pre>
+<pre><code>## $par
+## [1] -2.085569939e-05 -1.201188287e-04
+## 
+## $value
+## [1] 4.372055919e-08
+## 
+## $counts
+## function gradient 
+##       75       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw">untrace</span>(f1)</a></code></pre></div>
+</div>
+<div id="optimization-with-r" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> Optimization with R</h3>
+<p>See <a href="https://www.ibm.com/developerworks/library/ba-optimR-john-nash/index.html">conversation with John Nash about r optim and r optimx</a>.</p>
+</div>
+</div>
 <div id="exercises-1" class="section level2">
-<h2><span class="header-section-number">3.2</span> Exercises</h2>
-<ol style="list-style-type: decimal">
-<li>Consider estimating the location parameter of a Cauchy distribution with a known scale parameter. The density function is
+<h2><span class="header-section-number">3.3</span> Exercises</h2>
+<div id="cauchy-with-unknown-location." class="section level3">
+<h3><span class="header-section-number">3.3.1</span> Cauchy with unknown location.</h3>
+<p>Consider estimating the location parameter of a Cauchy distribution with a known scale parameter. The density function is
 <span class="math display">\[\begin{align*}
   f(x; \theta) = \frac{1}{\pi[1 + (x - \theta)^2]}, 
   \quad x \in R, \quad \theta \in R.
 \end{align*}\]</span>
-Let <span class="math inline">\(X_1, \ldots, X_n\)</span> be a random sample of size <span class="math inline">\(n\)</span> and <span class="math inline">\(\ell(\theta)\)</span> the log-likelihood function of <span class="math inline">\(\theta\)</span> based on the sample.</li>
-</ol>
-<ul>
-<li><p>Show that
+Let <span class="math inline">\(X_1, \ldots, X_n\)</span> be a random sample of size <span class="math inline">\(n\)</span> and <span class="math inline">\(\ell(\theta)\)</span> the log-likelihood function of <span class="math inline">\(\theta\)</span> based on the sample.
+- Show that
 <span class="math display">\[\begin{align*}
-\ell(\theta)
-&amp;= -n\ln \pi - \sum_{i=1}^n \ln [1+(\theta-X_i)^2], \\
-\ell&#39;(\theta)
-&amp;= -2 \sum_{i=1}^n \frac{\theta-X_i}{1+(\theta-X_i)^2}, \\
-\ell&#39;&#39;(\theta)
-&amp;= -2 \sum_{i=1}^n \frac{1-(\theta-X_i)^2}{[1+(\theta-X_i)^2]^2},
-\\
-I_n(\theta) &amp;= \frac{4n}{\pi}
-\int_{-\infty}^\infty \frac{x^2\,\mathrm{d}x}{(1+x^2)^3}
-= n/2,
-\end{align*}\]</span>
-where <span class="math inline">\(I_n\)</span> is the Fisher information of this sample.</p></li>
-<li>Set the random seed as <span class="math inline">\(20180909\)</span> and generate a random sample of size <span class="math inline">\(n = 10\)</span> with <span class="math inline">\(\theta = 5\)</span>. Implement a loglikelihood function and plot against <span class="math inline">\(\theta\)</span>.</li>
-<li>Find the MLE of <span class="math inline">\(\theta\)</span> using the Newton–Raphson method with initial values on a grid starting from <span class="math inline">\(-10\)</span> to <span class="math inline">\(20\)</span> with increment <span class="math inline">\(0.5\)</span>. Summarize the results.</li>
-<li>Apply fixed-point iterations using
+  \ell(\theta)
+  &amp;= -n\ln \pi - \sum_{i=1}^n \ln [1+(\theta-X_i)^2], \\
+  \ell&#39;(\theta)
+  &amp;= -2 \sum_{i=1}^n \frac{\theta-X_i}{1+(\theta-X_i)^2},  \\
+  \ell&#39;&#39;(\theta)
+  &amp;= -2 \sum_{i=1}^n \frac{1-(\theta-X_i)^2}{[1+(\theta-X_i)^2]^2},
+  \\
+  I_n(\theta) &amp;= \frac{4n}{\pi}
+  \int_{-\infty}^\infty \frac{x^2\,\mathrm{d}x}{(1+x^2)^3}
+  = n/2,
+  \end{align*}\]</span>
+where <span class="math inline">\(I_n\)</span> is the Fisher information of this sample.
+- Set the random seed as <span class="math inline">\(20180909\)</span> and generate a random sample of size <span class="math inline">\(n = 10\)</span> with <span class="math inline">\(\theta = 5\)</span>. Implement a loglikelihood function and plot against <span class="math inline">\(\theta\)</span>.
+- Find the MLE of <span class="math inline">\(\theta\)</span> using the Newton–Raphson method with initial values on a grid starting from <span class="math inline">\(-10\)</span> to <span class="math inline">\(30\)</span> with increment <span class="math inline">\(0.5\)</span>. Summarize the results.
+- Improved the Newton–Raphson method by halving the steps if the likelihood is not improved.
+- Apply fixed-point iterations using
 <span class="math inline">\(G(\theta)=\alpha \ell&#39;(\theta) + \theta\)</span>,
-with scaling choices of <span class="math inline">\(\alpha \in \{1, 0.64, 0.25\}\)</span> and the same initial values as above.</li>
-<li>First use Fisher scoring to find the MLE for <span class="math inline">\(\theta\)</span>, then refine the estimate by running Newton-Raphson method.
-Try the same starting points as above.</li>
-<li><p>Comment on the results from different methods (speed, stability, etc.).</p></li>
+with scaling choices of <span class="math inline">\(\alpha \in \{1, 0.64, 0.25\}\)</span> and the same initial values as above.
+- First use Fisher scoring to find the MLE for <span class="math inline">\(\theta\)</span>, then refine the estimate by running Newton-Raphson method.
+Try the same starting points as above.
+- Comment on the results from different methods (speed, stability, etc.).</p>
+</div>
+<div id="many-local-maxima" class="section level3">
+<h3><span class="header-section-number">3.3.2</span> Many local maxima</h3>
+<p>Consider the probability density function with parameter <span class="math inline">\(\theta\)</span>:
+<span class="math display">\[\begin{align*}
+  f(x; \theta) = \frac{1 - \cos(x - \theta)}{2\pi},   
+  \quad 0\le x\le 2\pi, \quad \theta \in (-\pi, \pi).
+\end{align*}\]</span>
+A random sample from the distribution is</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">3.91</span>, <span class="fl">4.85</span>, <span class="fl">2.28</span>, <span class="fl">4.06</span>, <span class="fl">3.70</span>, <span class="fl">4.04</span>, <span class="fl">5.46</span>, <span class="fl">3.53</span>, <span class="fl">2.28</span>, <span class="fl">1.96</span>,</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">       <span class="fl">2.53</span>, <span class="fl">3.88</span>, <span class="fl">2.22</span>, <span class="fl">3.47</span>, <span class="fl">4.82</span>, <span class="fl">2.46</span>, <span class="fl">2.99</span>, <span class="fl">2.54</span>, <span class="fl">0.52</span>)</a></code></pre></div>
+<ul>
+<li>Find the the log-likelihood function of <span class="math inline">\(\theta\)</span> based on the sample and plot it between <span class="math inline">\(-\pi\)</span> and <span class="math inline">\(\pi\)</span>.</li>
+<li>Find the method-of-moments estimator of <span class="math inline">\(\theta\)</span>. That is, the estimator <span class="math inline">\(\tilde\theta_n\)</span> is value of <span class="math inline">\(\theta\)</span> with
+<span class="math display">\[\begin{align*}
+\mathbb{E}(X \mid \theta) = \bar X_n,
+\end{align*}\]</span>
+where <span class="math inline">\(\bar X_n\)</span> is the sample mean. This means you have to first find the expression for <span class="math inline">\(\mathbb{E}(X \mid \theta)\)</span>.</li>
+<li>Find the MLE for <span class="math inline">\(\theta\)</span> using the Newton–Raphson method initial value <span class="math inline">\(\theta_0 = \tilde\theta_n\)</span>.</li>
+<li>What solutions do you find when you start at
+<span class="math inline">\(\theta_0 = -2.7\)</span> and <span class="math inline">\(\theta_0 = 2.7\)</span>?</li>
+<li>Repeat the above using 200 equally spaced starting values
+between <span class="math inline">\(-\pi\)</span> and <span class="math inline">\(\pi\)</span>. Partition the values into sets of attraction. That is, divide the set of starting values into separate groups, with each group corresponding to a separate unique outcome of the optimization.</li>
 </ul>
+</div>
+<div id="modeling-beetle-data" class="section level3">
+<h3><span class="header-section-number">3.3.3</span> Modeling beetle data</h3>
+<p>The counts of a floor beetle at various time points (in days) are given in a dataset.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">beetles &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">    <span class="dt">days    =</span> <span class="kw">c</span>(<span class="dv">0</span>,  <span class="dv">8</span>,  <span class="dv">28</span>,  <span class="dv">41</span>,  <span class="dv">63</span>,  <span class="dv">69</span>,   <span class="dv">97</span>, <span class="dv">117</span>,  <span class="dv">135</span>,  <span class="dv">154</span>),</a>
+<a class="sourceLine" id="cb75-3" data-line-number="3">    <span class="dt">beetles =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">47</span>, <span class="dv">192</span>, <span class="dv">256</span>, <span class="dv">768</span>, <span class="dv">896</span>, <span class="dv">1120</span>, <span class="dv">896</span>, <span class="dv">1184</span>, <span class="dv">1024</span>))</a></code></pre></div>
+<p>A simple model for population growth is the logistic model given by
+<span class="math display">\[
+\frac{\mathrm{d}N}{\mathrm{d}t} = r N(1 - \frac{N}{K}),
+\]</span>
+where <span class="math inline">\(N\)</span> is the population size, <span class="math inline">\(t\)</span> is time, <span class="math inline">\(r\)</span> is an unknown growth rate
+parameter, and <span class="math inline">\(K\)</span> is an unknown parameter that represents the population
+carrying capacity of the environment. The solution to the differential
+equation is given by
+<span class="math display">\[
+N_t = f(t) = \frac{K N_0}{N_0 + (K - N_0)\exp(-rt)},
+\]</span>
+where <span class="math inline">\(N_t\)</span> denotes the population size at time <span class="math inline">\(t\)</span>.
+- Fit the population growth model to the beetles data using the Gauss-Newton approach, to minimize the sum of squared errors between model predictions and observed counts.
+- Show the contour plot of the sum of squared errors.
+- In many population modeling application, an assumption of lognormality is adopted. That is , we assume that <span class="math inline">\(\log N_t\)</span> are independent and normally distributed with mean <span class="math inline">\(\log f(t)\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. Find the maximum likelihood estimators of <span class="math inline">\(\theta = (r, K, \sigma^2)\)</span> using any suitable method of your choice. Estimate the variance your parameter estimates.</p>
 
+</div>
 </div>
 </div>
 <h3>References</h3>
