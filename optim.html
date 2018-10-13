@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>STAT 5361: Statistical Computing, Fall 2018</title>
   <meta name="description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="STAT 5361: Statistical Computing, Fall 2018" />
   <meta property="og:type" content="book" />
@@ -36,6 +36,7 @@
 <link rel="next" href="em-algorithm.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -240,7 +241,7 @@ as <span class="math inline">\(n \to \infty\)</span>, <span class="math inline">
 <h3><span class="header-section-number">3.1.1</span> Bisection Method</h3>
 <p>The bisection method repeatedly bisects an interval and then selects a subinterval in which a root must lie for further processing. It is a very simple and robust method, but relatively slow.</p>
 <p>The method is applicable for solving the equation <span class="math inline">\(f(x) = 0\)</span> for the real variable <span class="math inline">\(x\)</span>, where <span class="math inline">\(f\)</span> is a continuous function defined on an interval <span class="math inline">\([a, b]\)</span> and <span class="math inline">\(f(a)\)</span> and <span class="math inline">\(f(b)\)</span> have opposite signs. This method is illustrated with an animation using the package <strong>animation</strong> <span class="citation">(Xie <a href="#ref-R-animation">2017</a>)</span>.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">animation<span class="op">::</span><span class="kw">bisection.method</span>()</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">animation<span class="op">::</span><span class="kw">bisection.method</span>()</code></pre>
 </div>
 <div id="newtons-method" class="section level3">
 <h3><span class="header-section-number">3.1.2</span> Newton’s Method</h3>
@@ -340,15 +341,15 @@ where <span class="math inline">\(g&#39;\)</span> is the gradient of <span class
 <p>Not even the gradient is needed.
 Possible moves are: reflection; expansion; outer contraction; inner contraction; shrinkage.</p>
 <p>Consider minimizing this simple function.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">f1 &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2">  x1 &lt;-<span class="st"> </span>x[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb67-3" data-line-number="3">  x2 &lt;-<span class="st"> </span>x[<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb67-4" data-line-number="4">  x1<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>x2<span class="op">^</span><span class="dv">2</span>  </a>
-<a class="sourceLine" id="cb67-5" data-line-number="5">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">f1 &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  x1 &lt;-<span class="st"> </span>x[<span class="dv">1</span>]
+  x2 &lt;-<span class="st"> </span>x[<span class="dv">2</span>]
+  x1<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span><span class="op">*</span>x2<span class="op">^</span><span class="dv">2</span>  
+}</code></pre>
 <p>Apparently the minimizer is <span class="math inline">\((0, 0)\)</span>. Let’s track all the points at which the function is evaluated in the Nelder-Mead algorithm.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">trace</span>(f1, <span class="dt">exit =</span> <span class="kw">quote</span>(<span class="kw">print</span>(<span class="kw">c</span>(<span class="kw">returnValue</span>(), x))))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trace</span>(f1, <span class="dt">exit =</span> <span class="kw">quote</span>(<span class="kw">print</span>(<span class="kw">c</span>(<span class="kw">returnValue</span>(), x))))</code></pre>
 <pre><code>## [1] &quot;f1&quot;</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>), f1, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">trace =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>), f1, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">trace =</span> <span class="ot">TRUE</span>))</code></pre>
 <pre><code>##   Nelder-Mead direct search function minimizer
 ## Tracing fn(par, ...) on exit 
 ## [1] 4 1 1
@@ -556,7 +557,7 @@ Possible moves are: reflection; expansion; outer contraction; inner contraction;
 ## 
 ## $message
 ## NULL</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw">untrace</span>(f1)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">untrace</span>(f1)</code></pre>
 </div>
 <div id="optimization-with-r" class="section level3">
 <h3><span class="header-section-number">3.2.4</span> Optimization with R</h3>
@@ -599,11 +600,11 @@ The strict inequality holds unless <span class="math inline">\(g(\theta^{s+1} \m
 Therefore, by alternating between the majorization and the minimization
 steps, the objective function is monotonically decreasing and thus its
 convergence is guaranteed.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>), <span class="dt">mgp=</span><span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.5</span>, <span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">f &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">4</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">8</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="kw">curve</span>(<span class="kw">f</span>(x), <span class="dv">0</span>, <span class="dv">12</span>)</a>
-<a class="sourceLine" id="cb74-4" data-line-number="4">g &lt;-<span class="st"> </span><span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="fl">5.5</span>)<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">15.75</span></a>
-<a class="sourceLine" id="cb74-5" data-line-number="5"><span class="kw">curve</span>(<span class="kw">g</span>(x), <span class="dv">0</span>, <span class="dv">12</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>), <span class="dt">mgp=</span><span class="kw">c</span>(<span class="fl">1.5</span>, <span class="fl">0.5</span>, <span class="dv">0</span>))
+f &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">4</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">8</span>) <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(x <span class="op">-</span><span class="st"> </span><span class="dv">10</span>)
+<span class="kw">curve</span>(<span class="kw">f</span>(x), <span class="dv">0</span>, <span class="dv">12</span>)
+g &lt;-<span class="st"> </span><span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="fl">5.5</span>)<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">15.75</span>
+<span class="kw">curve</span>(<span class="kw">g</span>(x), <span class="dv">0</span>, <span class="dv">12</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</code></pre>
 <p><img src="02-optim_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Inequalities are used to devise MM algorithms.</p>
 <ul>
@@ -773,8 +774,8 @@ Try the same starting points as above.
   \quad 0\le x\le 2\pi, \quad \theta \in (-\pi, \pi).
 \end{align*}\]</span>
 A random sample from the distribution is</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">3.91</span>, <span class="fl">4.85</span>, <span class="fl">2.28</span>, <span class="fl">4.06</span>, <span class="fl">3.70</span>, <span class="fl">4.04</span>, <span class="fl">5.46</span>, <span class="fl">3.53</span>, <span class="fl">2.28</span>, <span class="fl">1.96</span>,</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">       <span class="fl">2.53</span>, <span class="fl">3.88</span>, <span class="fl">2.22</span>, <span class="fl">3.47</span>, <span class="fl">4.82</span>, <span class="fl">2.46</span>, <span class="fl">2.99</span>, <span class="fl">2.54</span>, <span class="fl">0.52</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">3.91</span>, <span class="fl">4.85</span>, <span class="fl">2.28</span>, <span class="fl">4.06</span>, <span class="fl">3.70</span>, <span class="fl">4.04</span>, <span class="fl">5.46</span>, <span class="fl">3.53</span>, <span class="fl">2.28</span>, <span class="fl">1.96</span>,
+       <span class="fl">2.53</span>, <span class="fl">3.88</span>, <span class="fl">2.22</span>, <span class="fl">3.47</span>, <span class="fl">4.82</span>, <span class="fl">2.46</span>, <span class="fl">2.99</span>, <span class="fl">2.54</span>, <span class="fl">0.52</span>)</code></pre>
 <ul>
 <li>Find the the log-likelihood function of <span class="math inline">\(\theta\)</span> based on the sample and plot it between <span class="math inline">\(-\pi\)</span> and <span class="math inline">\(\pi\)</span>.</li>
 <li>Find the method-of-moments estimator of <span class="math inline">\(\theta\)</span>. That is, the estimator <span class="math inline">\(\tilde\theta_n\)</span> is value of <span class="math inline">\(\theta\)</span> with
@@ -792,9 +793,9 @@ between <span class="math inline">\(-\pi\)</span> and <span class="math inline">
 <div id="modeling-beetle-data" class="section level3">
 <h3><span class="header-section-number">3.5.3</span> Modeling beetle data</h3>
 <p>The counts of a floor beetle at various time points (in days) are given in a dataset.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">beetles &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb76-2" data-line-number="2">    <span class="dt">days    =</span> <span class="kw">c</span>(<span class="dv">0</span>,  <span class="dv">8</span>,  <span class="dv">28</span>,  <span class="dv">41</span>,  <span class="dv">63</span>,  <span class="dv">69</span>,   <span class="dv">97</span>, <span class="dv">117</span>,  <span class="dv">135</span>,  <span class="dv">154</span>),</a>
-<a class="sourceLine" id="cb76-3" data-line-number="3">    <span class="dt">beetles =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">47</span>, <span class="dv">192</span>, <span class="dv">256</span>, <span class="dv">768</span>, <span class="dv">896</span>, <span class="dv">1120</span>, <span class="dv">896</span>, <span class="dv">1184</span>, <span class="dv">1024</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">beetles &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">days    =</span> <span class="kw">c</span>(<span class="dv">0</span>,  <span class="dv">8</span>,  <span class="dv">28</span>,  <span class="dv">41</span>,  <span class="dv">63</span>,  <span class="dv">69</span>,   <span class="dv">97</span>, <span class="dv">117</span>,  <span class="dv">135</span>,  <span class="dv">154</span>),
+    <span class="dt">beetles =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">47</span>, <span class="dv">192</span>, <span class="dv">256</span>, <span class="dv">768</span>, <span class="dv">896</span>, <span class="dv">1120</span>, <span class="dv">896</span>, <span class="dv">1184</span>, <span class="dv">1024</span>))</code></pre>
 <p>A simple model for population growth is the logistic model given by
 <span class="math display">\[
 \frac{\mathrm{d}N}{\mathrm{d}t} = r N(1 - \frac{N}{K}),
@@ -875,7 +876,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

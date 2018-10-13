@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>STAT 5361: Statistical Computing, Fall 2018</title>
   <meta name="description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="STAT 5361: Statistical Computing, Fall 2018" />
   <meta property="og:type" content="book" />
@@ -36,6 +36,7 @@
 <link rel="next" href="random-number-generation.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -653,29 +654,29 @@ convergence tolerance.
 The output of this function is the EM estimate of all the parameters.</p></li>
 <li><p>Here is a function to generate data from the mixture regression model.</p></li>
 </ol>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">regmix_sim &lt;-<span class="st"> </span><span class="cf">function</span>(n, pi, beta, sigma) {</a>
-<a class="sourceLine" id="cb77-2" data-line-number="2">    K &lt;-<span class="st"> </span><span class="kw">ncol</span>(beta)</a>
-<a class="sourceLine" id="cb77-3" data-line-number="3">    p &lt;-<span class="st"> </span><span class="kw">NROW</span>(beta)</a>
-<a class="sourceLine" id="cb77-4" data-line-number="4">    xmat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>p), n, p) <span class="co"># normal covaraites</span></a>
-<a class="sourceLine" id="cb77-5" data-line-number="5">    error &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>K, <span class="dt">sd =</span> sigma), n, K)</a>
-<a class="sourceLine" id="cb77-6" data-line-number="6">    ymat &lt;-<span class="st"> </span>xmat <span class="op">%*%</span><span class="st"> </span>beta <span class="op">+</span><span class="st"> </span>error <span class="co"># n by K matrix</span></a>
-<a class="sourceLine" id="cb77-7" data-line-number="7">    ind &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">rmultinom</span>(n, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> pi))</a>
-<a class="sourceLine" id="cb77-8" data-line-number="8">    y &lt;-<span class="st"> </span><span class="kw">rowSums</span>(ymat <span class="op">*</span><span class="st"> </span>ind)</a>
-<a class="sourceLine" id="cb77-9" data-line-number="9">    <span class="kw">data.frame</span>(y, xmat)</a>
-<a class="sourceLine" id="cb77-10" data-line-number="10">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">regmix_sim &lt;-<span class="st"> </span><span class="cf">function</span>(n, pi, beta, sigma) {
+    K &lt;-<span class="st"> </span><span class="kw">ncol</span>(beta)
+    p &lt;-<span class="st"> </span><span class="kw">NROW</span>(beta)
+    xmat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>p), n, p) <span class="co"># normal covaraites</span>
+    error &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>K, <span class="dt">sd =</span> sigma), n, K)
+    ymat &lt;-<span class="st"> </span>xmat <span class="op">%*%</span><span class="st"> </span>beta <span class="op">+</span><span class="st"> </span>error <span class="co"># n by K matrix</span>
+    ind &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">rmultinom</span>(n, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> pi))
+    y &lt;-<span class="st"> </span><span class="kw">rowSums</span>(ymat <span class="op">*</span><span class="st"> </span>ind)
+    <span class="kw">data.frame</span>(y, xmat)
+}</code></pre>
 <p>Generate data with the following and estimate the parameters.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">400</span></a>
-<a class="sourceLine" id="cb78-2" data-line-number="2">pi &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span>, <span class="fl">.3</span>)</a>
-<a class="sourceLine" id="cb78-3" data-line-number="3">bet &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>( <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb78-4" data-line-number="4">                <span class="dv">-1</span>, <span class="dv">-1</span>, <span class="dv">-1</span>), <span class="dv">2</span>, <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb78-5" data-line-number="5">sig &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb78-6" data-line-number="6"><span class="kw">set.seed</span>(<span class="dv">1205</span>)</a>
-<a class="sourceLine" id="cb78-7" data-line-number="7">dat &lt;-<span class="st"> </span><span class="kw">regmix_sim</span>(n, pi, bet, sig)</a>
-<a class="sourceLine" id="cb78-8" data-line-number="8"><span class="co">## regmix_em(y = dat[,1], xmat = dat[,-1], </span></a>
-<a class="sourceLine" id="cb78-9" data-line-number="9"><span class="co">##           pi.init = pi / pi / length(pi),</span></a>
-<a class="sourceLine" id="cb78-10" data-line-number="10"><span class="co">##           beta.init = bet * 0,</span></a>
-<a class="sourceLine" id="cb78-11" data-line-number="11"><span class="co">##           sigma.init = sig / sig, </span></a>
-<a class="sourceLine" id="cb78-12" data-line-number="12"><span class="co">##           control = list(maxit = 500, tol = 1e-5))</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">400</span>
+pi &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span>, <span class="fl">.3</span>)
+bet &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>( <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>, 
+                <span class="dv">-1</span>, <span class="dv">-1</span>, <span class="dv">-1</span>), <span class="dv">2</span>, <span class="dv">3</span>)
+sig &lt;-<span class="st"> </span><span class="dv">1</span>
+<span class="kw">set.seed</span>(<span class="dv">1205</span>)
+dat &lt;-<span class="st"> </span><span class="kw">regmix_sim</span>(n, pi, bet, sig)
+<span class="co">## regmix_em(y = dat[,1], xmat = dat[,-1], </span>
+<span class="co">##           pi.init = pi / pi / length(pi),</span>
+<span class="co">##           beta.init = bet * 0,</span>
+<span class="co">##           sigma.init = sig / sig, </span>
+<span class="co">##           control = list(maxit = 500, tol = 1e-5))</span></code></pre>
 </div>
 <div id="a-poisson-hmm-for-earthquake-data" class="section level3">
 <h3><span class="header-section-number">4.8.2</span> A Poisson-HMM for earthquake data</h3>
@@ -701,55 +702,55 @@ whether or not trace the iteration.</li>
 <p>Apply the function to model the frequency of major earthquakes
 (magnitude 7 or above) in the world from 1900 to 2015 with a
 2-state HMM and a 3-state HMM.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="co">## frequency of major earthquake in the world from 1900 to 2015</span></a>
-<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="co">## raw data accessed at http://earthquake.usgs.gov/earthquakes/search/</span></a>
-<a class="sourceLine" id="cb79-3" data-line-number="3">qk7freq &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb79-4" data-line-number="4">             <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">12</span>, <span class="dv">8</span>, </a>
-<a class="sourceLine" id="cb79-5" data-line-number="5">             <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">12</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">16</span>, <span class="dv">15</span>, </a>
-<a class="sourceLine" id="cb79-6" data-line-number="6">             <span class="dv">9</span>, <span class="dv">19</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">21</span>, <span class="dv">14</span>, </a>
-<a class="sourceLine" id="cb79-7" data-line-number="7">             <span class="dv">7</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">18</span>, <span class="dv">13</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">9</span>, </a>
-<a class="sourceLine" id="cb79-8" data-line-number="8">             <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">21</span>, <span class="dv">8</span>, <span class="dv">8</span>, </a>
-<a class="sourceLine" id="cb79-9" data-line-number="9">             <span class="dv">13</span>, <span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">17</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">22</span>, <span class="dv">14</span>, </a>
-<a class="sourceLine" id="cb79-10" data-line-number="10">             <span class="dv">17</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">8</span>, </a>
-<a class="sourceLine" id="cb79-11" data-line-number="11">             <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">11</span>,  <span class="dv">9</span>, </a>
-<a class="sourceLine" id="cb79-12" data-line-number="12">             <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">13</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">12</span>, <span class="dv">18</span>, </a>
-<a class="sourceLine" id="cb79-13" data-line-number="13">             <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">11</span>, <span class="dv">11</span>, <span class="dv">18</span>, <span class="dv">12</span>, <span class="dv">17</span>, </a>
-<a class="sourceLine" id="cb79-14" data-line-number="14">             <span class="dv">24</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">19</span>, <span class="dv">12</span>, <span class="dv">19</span>)</a>
-<a class="sourceLine" id="cb79-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb79-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb79-17" data-line-number="17"><span class="co">## forward/backward probability for Poisson-HMM from </span></a>
-<a class="sourceLine" id="cb79-18" data-line-number="18"><span class="co">## Zucchini and MacDonald (2009): </span></a>
-<a class="sourceLine" id="cb79-19" data-line-number="19"><span class="co">## Hidden Markov Models for Time Series: An Introduction with R.</span></a>
-<a class="sourceLine" id="cb79-20" data-line-number="20">pois.HMM.lalphabeta &lt;-<span class="st"> </span><span class="cf">function</span>(x, m, lambda, gamma, <span class="dt">delta =</span> <span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb79-21" data-line-number="21">    <span class="cf">if</span> (<span class="kw">is.null</span>(delta)) </a>
-<a class="sourceLine" id="cb79-22" data-line-number="22">        delta &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(<span class="kw">diag</span>(m) <span class="op">-</span><span class="st"> </span>gamma <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="kw">rep</span>(<span class="dv">1</span>, m))</a>
-<a class="sourceLine" id="cb79-23" data-line-number="23">    n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
-<a class="sourceLine" id="cb79-24" data-line-number="24">    lalpha &lt;-<span class="st"> </span>lbeta &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, m, n)</a>
-<a class="sourceLine" id="cb79-25" data-line-number="25">    allprobs &lt;-<span class="st"> </span><span class="kw">outer</span>(x, lambda, dpois)</a>
-<a class="sourceLine" id="cb79-26" data-line-number="26">    foo &lt;-<span class="st"> </span>delta <span class="op">*</span><span class="st"> </span>allprobs[<span class="dv">1</span>, ]</a>
-<a class="sourceLine" id="cb79-27" data-line-number="27">    sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</a>
-<a class="sourceLine" id="cb79-28" data-line-number="28">    lscale &lt;-<span class="st"> </span><span class="kw">log</span>(sumfoo)</a>
-<a class="sourceLine" id="cb79-29" data-line-number="29">    foo &lt;-<span class="st"> </span>foo<span class="op">/</span>sumfoo</a>
-<a class="sourceLine" id="cb79-30" data-line-number="30">    lalpha[, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale</a>
-<a class="sourceLine" id="cb79-31" data-line-number="31">    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb79-32" data-line-number="32">        foo &lt;-<span class="st"> </span>foo <span class="op">%*%</span><span class="st"> </span>gamma <span class="op">*</span><span class="st"> </span>allprobs[i, ]</a>
-<a class="sourceLine" id="cb79-33" data-line-number="33">        sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</a>
-<a class="sourceLine" id="cb79-34" data-line-number="34">        lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)</a>
-<a class="sourceLine" id="cb79-35" data-line-number="35">        foo &lt;-<span class="st"> </span>foo<span class="op">/</span>sumfoo</a>
-<a class="sourceLine" id="cb79-36" data-line-number="36">        lalpha[, i] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale</a>
-<a class="sourceLine" id="cb79-37" data-line-number="37">    }</a>
-<a class="sourceLine" id="cb79-38" data-line-number="38">    lbeta[, n] &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, m)</a>
-<a class="sourceLine" id="cb79-39" data-line-number="39">    foo &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">/</span>m, m)</a>
-<a class="sourceLine" id="cb79-40" data-line-number="40">    lscale &lt;-<span class="st"> </span><span class="kw">log</span>(m)</a>
-<a class="sourceLine" id="cb79-41" data-line-number="41">    <span class="cf">for</span> (i <span class="cf">in</span> (n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">1</span>) {</a>
-<a class="sourceLine" id="cb79-42" data-line-number="42">        foo &lt;-<span class="st"> </span>gamma <span class="op">%*%</span><span class="st"> </span>(allprobs[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, ] <span class="op">*</span><span class="st"> </span>foo)</a>
-<a class="sourceLine" id="cb79-43" data-line-number="43">        lbeta[, i] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale</a>
-<a class="sourceLine" id="cb79-44" data-line-number="44">        sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</a>
-<a class="sourceLine" id="cb79-45" data-line-number="45">        foo &lt;-<span class="st"> </span>foo<span class="op">/</span>sumfoo</a>
-<a class="sourceLine" id="cb79-46" data-line-number="46">        lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)</a>
-<a class="sourceLine" id="cb79-47" data-line-number="47">    }</a>
-<a class="sourceLine" id="cb79-48" data-line-number="48">    <span class="kw">list</span>(<span class="dt">la =</span> lalpha, <span class="dt">lb =</span> lbeta)</a>
-<a class="sourceLine" id="cb79-49" data-line-number="49">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## frequency of major earthquake in the world from 1900 to 2015</span>
+<span class="co">## raw data accessed at http://earthquake.usgs.gov/earthquakes/search/</span>
+qk7freq &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>,
+             <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">12</span>, <span class="dv">8</span>, 
+             <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">12</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">16</span>, <span class="dv">15</span>, 
+             <span class="dv">9</span>, <span class="dv">19</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">21</span>, <span class="dv">14</span>, 
+             <span class="dv">7</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">18</span>, <span class="dv">13</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">9</span>, 
+             <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">21</span>, <span class="dv">8</span>, <span class="dv">8</span>, 
+             <span class="dv">13</span>, <span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">17</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">22</span>, <span class="dv">14</span>, 
+             <span class="dv">17</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">8</span>, 
+             <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">11</span>,  <span class="dv">9</span>, 
+             <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">13</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">12</span>, <span class="dv">18</span>, 
+             <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">11</span>, <span class="dv">11</span>, <span class="dv">18</span>, <span class="dv">12</span>, <span class="dv">17</span>, 
+             <span class="dv">24</span>, <span class="dv">20</span>, <span class="dv">16</span>, <span class="dv">19</span>, <span class="dv">12</span>, <span class="dv">19</span>)
+
+
+<span class="co">## forward/backward probability for Poisson-HMM from </span>
+<span class="co">## Zucchini and MacDonald (2009): </span>
+<span class="co">## Hidden Markov Models for Time Series: An Introduction with R.</span>
+pois.HMM.lalphabeta &lt;-<span class="st"> </span><span class="cf">function</span>(x, m, lambda, gamma, <span class="dt">delta =</span> <span class="ot">NULL</span>) {
+    <span class="cf">if</span> (<span class="kw">is.null</span>(delta)) 
+        delta &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(<span class="kw">diag</span>(m) <span class="op">-</span><span class="st"> </span>gamma <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="kw">rep</span>(<span class="dv">1</span>, m))
+    n &lt;-<span class="st"> </span><span class="kw">length</span>(x)
+    lalpha &lt;-<span class="st"> </span>lbeta &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, m, n)
+    allprobs &lt;-<span class="st"> </span><span class="kw">outer</span>(x, lambda, dpois)
+    foo &lt;-<span class="st"> </span>delta <span class="op">*</span><span class="st"> </span>allprobs[<span class="dv">1</span>, ]
+    sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)
+    lscale &lt;-<span class="st"> </span><span class="kw">log</span>(sumfoo)
+    foo &lt;-<span class="st"> </span>foo<span class="op">/</span>sumfoo
+    lalpha[, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale
+    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>n) {
+        foo &lt;-<span class="st"> </span>foo <span class="op">%*%</span><span class="st"> </span>gamma <span class="op">*</span><span class="st"> </span>allprobs[i, ]
+        sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)
+        lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)
+        foo &lt;-<span class="st"> </span>foo<span class="op">/</span>sumfoo
+        lalpha[, i] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale
+    }
+    lbeta[, n] &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, m)
+    foo &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">/</span>m, m)
+    lscale &lt;-<span class="st"> </span><span class="kw">log</span>(m)
+    <span class="cf">for</span> (i <span class="cf">in</span> (n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">1</span>) {
+        foo &lt;-<span class="st"> </span>gamma <span class="op">%*%</span><span class="st"> </span>(allprobs[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, ] <span class="op">*</span><span class="st"> </span>foo)
+        lbeta[, i] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale
+        sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)
+        foo &lt;-<span class="st"> </span>foo<span class="op">/</span>sumfoo
+        lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)
+    }
+    <span class="kw">list</span>(<span class="dt">la =</span> lalpha, <span class="dt">lb =</span> lbeta)
+}</code></pre>
 
 </div>
 </div>
@@ -828,7 +829,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

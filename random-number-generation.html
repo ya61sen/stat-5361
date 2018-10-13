@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>STAT 5361: Statistical Computing, Fall 2018</title>
   <meta name="description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="STAT 5361: Statistical Computing, Fall 2018" />
   <meta property="og:type" content="book" />
@@ -36,6 +36,7 @@
 <link rel="next" href="markov-chain-monte-carlo.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -223,23 +224,23 @@ consider a multiplicative random number generator
 <span class="math display">\[
 I_{n+1} = 7^5 I_n\mathrm{mod} (2^{31} - 1).
 \]</span></p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">runif.my &lt;-<span class="st"> </span><span class="cf">function</span>(n, seed) {</a>
-<a class="sourceLine" id="cb80-2" data-line-number="2">  ret &lt;-<span class="st"> </span><span class="kw">double</span>(n)</a>
-<a class="sourceLine" id="cb80-3" data-line-number="3">  last &lt;-<span class="st"> </span>seed</a>
-<a class="sourceLine" id="cb80-4" data-line-number="4">  p &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">31</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb80-5" data-line-number="5">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb80-6" data-line-number="6">    last &lt;-<span class="st"> </span>(<span class="dv">7</span><span class="op">^</span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>last) <span class="op">%%</span><span class="st"> </span>p</a>
-<a class="sourceLine" id="cb80-7" data-line-number="7">    ret[i] &lt;-<span class="st"> </span>last <span class="op">/</span><span class="st"> </span>p</a>
-<a class="sourceLine" id="cb80-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb80-9" data-line-number="9">  ret</a>
-<a class="sourceLine" id="cb80-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb80-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb80-12" data-line-number="12">u &lt;-<span class="st"> </span><span class="kw">runif.my</span>(<span class="dv">1000</span>, <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">runif.my &lt;-<span class="st"> </span><span class="cf">function</span>(n, seed) {
+  ret &lt;-<span class="st"> </span><span class="kw">double</span>(n)
+  last &lt;-<span class="st"> </span>seed
+  p &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">31</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {
+    last &lt;-<span class="st"> </span>(<span class="dv">7</span><span class="op">^</span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>last) <span class="op">%%</span><span class="st"> </span>p
+    ret[i] &lt;-<span class="st"> </span>last <span class="op">/</span><span class="st"> </span>p
+  }
+  ret
+}
+
+u &lt;-<span class="st"> </span><span class="kw">runif.my</span>(<span class="dv">1000</span>, <span class="dv">2</span>)</code></pre>
 <p>The randomness can be viewed from a histogram and can be tested,
 for example, with the KS test.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">hist</span>(u)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(u)</code></pre>
 <p><img src="04-rng_files/figure-html/unif-ks-1.png" width="672" /></p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">ks.test</span>(u, <span class="st">&quot;punif&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ks.test</span>(u, <span class="st">&quot;punif&quot;</span>)</code></pre>
 <pre><code>## 
 ##  One-sample Kolmogorov-Smirnov test
 ## 
@@ -668,7 +669,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

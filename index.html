@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>STAT 5361: Statistical Computing, Fall 2018</title>
   <meta name="description" content="This is a series of notes for the students of STAT 5361, Statisticl Computing, at UConn.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="STAT 5361: Statistical Computing, Fall 2018" />
   <meta property="og:type" content="book" />
@@ -36,6 +36,7 @@
 <link rel="next" href="nla.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -207,8 +208,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">STAT 5361: Statistical Computing, Fall 2018</h1>
-<h4 class="author"><em>Jun Yan</em></h4>
-<h4 class="date"><em>2018-10-13</em></h4>
+<p class="author"><em>Jun Yan</em></p>
+<p class="date"><em>2018-10-13</em></p>
 </div>
 <div id="prelim" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
@@ -226,30 +227,30 @@ Wang, a PhD student in Statistics at the time, can be enlighting:
 <div id="a-teaser-example-likelihood-estimation" class="section level2">
 <h2><span class="header-section-number">1.1</span> A Teaser Example: Likelihood Estimation</h2>
 <p>In mathematical statistics, we have learned that, under certain regularity conditions, the maximum likelihood estimator (MLE) is consistent, asymptotically normal, and most efficient. The asymptotic variance of the estimator if the inverse of the Fisher information matrix. Specifically, let <span class="math inline">\(X_1, \ldots, X_n\)</span> be a random sample from a distribution with density <span class="math inline">\(f(x; \theta)\)</span>, where <span class="math inline">\(\theta\)</span> is a parameter. How do we obtain the MLE?</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">x &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape =</span> <span class="dv">2</span>, <span class="dt">scale =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">hist</span>(x)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+n &lt;-<span class="st"> </span><span class="dv">100</span>
+x &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape =</span> <span class="dv">2</span>, <span class="dt">scale =</span> <span class="dv">4</span>)
+<span class="kw">hist</span>(x)</code></pre>
 <p><img src="index_files/figure-html/data-1.png" width="672" /></p>
 <p>Package <strong>MASS</strong> provides a function <code>fitdistr()</code> to obtain the MLE for univariate distributions with a random sample. We can learn two things from this function. First, an objective function representing the negative loglikelihood is formed, depending on the input of the density function, and fed to the optimizer function <code>optim</code>. Second, the variance estimator of the MLE is obtained by inverting the Hessian matrix of the objective function, which is an estimator of the Fisher information matrix. For commonly used distributions, starting values are not necessary. The function computes moment estimator and use them as starting values.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> <span class="st">&quot;gamma&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> <span class="st">&quot;gamma&quot;</span>)</code></pre>
 <pre><code>## Warning in densfun(x, parm[1], parm[2], ...): NaNs produced</code></pre>
 <pre><code>##      shape         rate   
 ##   2.19321713   0.31850407 
 ##  (0.28968120) (0.04724651)</code></pre>
 <p>For distributions not in the provided list, the <code>densfun</code> needs to be a function returning a density evaluated at its first arguments, in which case, the <code>start</code> argument needs to be a named list to feed to the optimizer. For example, pretend that someone has a fancy distribution which is just a rename of the gamma distribution. Its density function is defined based on the gamma density <code>dgamma</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">dfancy &lt;-<span class="st"> </span><span class="cf">function</span>(x, shape, scale, <span class="dt">log =</span> <span class="ot">FALSE</span>) {</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="kw">dgamma</span>(x, <span class="dt">shape =</span> shape, <span class="dt">scale =</span> scale, <span class="dt">log =</span> log)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw">suppressWarnings</span>(MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> dfancy, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">20</span>)))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">dfancy &lt;-<span class="st"> </span><span class="cf">function</span>(x, shape, scale, <span class="dt">log =</span> <span class="ot">FALSE</span>) {
+  <span class="kw">dgamma</span>(x, <span class="dt">shape =</span> shape, <span class="dt">scale =</span> scale, <span class="dt">log =</span> log)
+}
+
+<span class="kw">suppressWarnings</span>(MASS<span class="op">::</span><span class="kw">fitdistr</span>(x, <span class="dt">densfun =</span> dfancy, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">20</span>)))</code></pre>
 <pre><code>##      shape       scale  
 ##   2.1931194   3.1400457 
 ##  (0.2897513) (0.4659625)</code></pre>
 <p>The <strong>stats4</strong> package provides MLE using S4 classes.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">nll &lt;-<span class="st"> </span><span class="cf">function</span>(shape, scale) <span class="op">-</span><span class="kw">sum</span>(<span class="kw">dfancy</span>(x, shape, scale, <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">suppressWarnings</span>(fit &lt;-<span class="st"> </span>stats4<span class="op">::</span><span class="kw">mle</span>(nll, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">10</span>)))</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">stats4<span class="op">::</span><span class="kw">summary</span>(fit)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">nll &lt;-<span class="st"> </span><span class="cf">function</span>(shape, scale) <span class="op">-</span><span class="kw">sum</span>(<span class="kw">dfancy</span>(x, shape, scale, <span class="ot">TRUE</span>))
+<span class="kw">suppressWarnings</span>(fit &lt;-<span class="st"> </span>stats4<span class="op">::</span><span class="kw">mle</span>(nll, <span class="dt">start =</span> <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">10</span>, <span class="dt">scale =</span> <span class="dv">10</span>)))
+stats4<span class="op">::</span><span class="kw">summary</span>(fit)</code></pre>
 <pre><code>## Maximum likelihood estimation
 ## 
 ## Call:
@@ -265,21 +266,21 @@ Wang, a PhD student in Statistics at the time, can be enlighting:
 <div id="computer-arithmetics" class="section level2">
 <h2><span class="header-section-number">1.2</span> Computer Arithmetics</h2>
 <p><span class="citation">Burns (<a href="#ref-burns2012r">2012</a>)</span> summarizes many traps beginners may fall into. The first one is the floating number trap. Are you surprised by what you see in the following?</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">## floating point traps</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="fl">.1</span> <span class="op">==</span><span class="st"> </span><span class="fl">.3</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## floating point traps</span>
+<span class="fl">.1</span> <span class="op">==</span><span class="st"> </span><span class="fl">.3</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span></code></pre>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">.1</span>) <span class="op">==</span><span class="st"> </span><span class="fl">0.3</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">.1</span>) <span class="op">==</span><span class="st"> </span><span class="fl">0.3</span></code></pre>
 <pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">.1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">.1</span>)</code></pre>
 <pre><code>##  [1] 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">unique</span>(<span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span> <span class="op">-</span><span class="st"> </span><span class="fl">.1</span>, <span class="fl">.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">.2</span>, <span class="fl">.6</span> <span class="op">-</span><span class="st"> </span><span class="fl">.3</span>, <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="fl">.4</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unique</span>(<span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span> <span class="op">-</span><span class="st"> </span><span class="fl">.1</span>, <span class="fl">.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">.2</span>, <span class="fl">.6</span> <span class="op">-</span><span class="st"> </span><span class="fl">.3</span>, <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="fl">.4</span>))</code></pre>
 <pre><code>## [1] 0.3 0.3 0.3</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span> <span class="op">-</span><span class="st"> </span><span class="fl">.1</span>, <span class="fl">.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">.2</span>, <span class="fl">.6</span> <span class="op">-</span><span class="st"> </span><span class="fl">.3</span>, <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="fl">.4</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(.<span class="dv">3</span>, <span class="fl">.4</span> <span class="op">-</span><span class="st"> </span><span class="fl">.1</span>, <span class="fl">.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">.2</span>, <span class="fl">.6</span> <span class="op">-</span><span class="st"> </span><span class="fl">.3</span>, <span class="fl">.7</span> <span class="op">-</span><span class="st"> </span><span class="fl">.4</span>)</code></pre>
 <pre><code>## [1] 0.3 0.3 0.3 0.3 0.3</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="fl">.1</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">20</span>)
+<span class="fl">.1</span></code></pre>
 <pre><code>## [1] 0.10000000000000000555</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="fl">.3</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="fl">.3</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span></code></pre>
 <pre><code>## [1] 0.099999999999999991673</code></pre>
 <p>How does a computer represent a number? Computers use switches, which has only two states, on and off, to represent numbers. That is, it uses the binary number system. With a finite (though large) number switches on a computer, not all real numbers are representable. Binary numbers are made of bits, each of which represent a switch. A byte is 8 bits, which represents one character.</p>
 <div id="integers" class="section level3">
@@ -290,29 +291,29 @@ It is represented by the coefficients <span class="math inline">\(x_i\)</span> i
 \sum_{i=1}^{32} x_i 2^{i-1} - 2^{31},
 \]</span>
 where <span class="math inline">\(x_i\)</span> is either 0 or 1.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">imax &lt;-<span class="st"> </span>.Machine<span class="op">$</span>integer.max</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">imax</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">imax &lt;-<span class="st"> </span>.Machine<span class="op">$</span>integer.max
+imax</code></pre>
 <pre><code>## [1] 2147483647</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">imax <span class="op">+</span><span class="st"> </span>1L</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">imax <span class="op">+</span><span class="st"> </span>1L</code></pre>
 <pre><code>## Warning in imax + 1L: NAs produced by integer overflow</code></pre>
 <pre><code>## [1] NA</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">log</span>(imax, <span class="dt">base =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">log</span>(imax, <span class="dt">base =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## [1] 30.999999999328192501</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">u &lt;-<span class="st"> </span>0L</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">b &lt;-<span class="st"> </span>1L</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> 1L<span class="op">:</span>31L) {</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">  u &lt;-<span class="st"> </span>u <span class="op">+</span><span class="st"> </span>b</a>
-<a class="sourceLine" id="cb30-5" data-line-number="5">  b &lt;-<span class="st"> </span>b <span class="op">*</span><span class="st"> </span>2L</a>
-<a class="sourceLine" id="cb30-6" data-line-number="6">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">u &lt;-<span class="st"> </span>0L
+b &lt;-<span class="st"> </span>1L
+<span class="cf">for</span> (i <span class="cf">in</span> 1L<span class="op">:</span>31L) {
+  u &lt;-<span class="st"> </span>u <span class="op">+</span><span class="st"> </span>b
+  b &lt;-<span class="st"> </span>b <span class="op">*</span><span class="st"> </span>2L
+}</code></pre>
 <pre><code>## Warning in b * 2L: NAs produced by integer overflow</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">u</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">u</code></pre>
 <pre><code>## [1] 2147483647</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L</code></pre>
 <pre><code>## [1] 1000000000</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L</code></pre>
 <pre><code>## Warning in 1000L * 1000L * 1000L * 1000L: NAs produced by integer overflow</code></pre>
 <pre><code>## [1] NA</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span><span class="dv">1000</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span>1000L <span class="op">*</span><span class="st"> </span><span class="dv">1000</span></code></pre>
 <pre><code>## [1] 1e+12</code></pre>
 </div>
 <div id="floating-point" class="section level3">
@@ -328,31 +329,31 @@ The fractional part <span class="math inline">\(\sum_{i=1}^t x_i 2^{-i}\)</span>
 <p>A standard double precision representation uses 8 bytes or 64 bits: a sign bit, an 11 bit exponent, and <span class="math inline">\(t = 52\)</span> bits for the significand. With 11 bits there are <span class="math inline">\(2^{11} = 2048\)</span> possible values for the exponent, which are usually shifted so that the allowed values range from <span class="math inline">\(-1022\)</span> to 1023, again with one special sign value.</p>
 <p>The IEEE standard for floating point arithmetic calls for basic arithmetic operations to be performed to higher precision, and then rounded to the nearest representable floating point number.</p>
 <p>Arithmetic underflow occurs where the result of a calculation is a smaller number than what the computer can actually represent. Arithmetic overflow occurs when a calculation produces a result that is greater in magnitude than what the computer can represent. Here is a demonstration <span class="citation">(Gray <a href="#ref-gray2001advanced">2001</a>)</span>.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">.Machine<span class="op">$</span>double.eps</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">20</span>)
+.Machine<span class="op">$</span>double.eps</code></pre>
 <pre><code>## [1] 2.2204460492503130808e-16</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">.Machine<span class="op">$</span>double.base <span class="op">^</span><span class="st"> </span>.Machine<span class="op">$</span>double.ulp.digits</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">.Machine<span class="op">$</span>double.base <span class="op">^</span><span class="st"> </span>.Machine<span class="op">$</span>double.ulp.digits</code></pre>
 <pre><code>## [1] 2.2204460492503130808e-16</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>.Machine<span class="op">$</span>double.eps <span class="op">==</span><span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>.Machine<span class="op">$</span>double.eps <span class="op">==</span><span class="st"> </span><span class="dv">1</span></code></pre>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>.Machine<span class="op">$</span>double.base <span class="op">^</span><span class="st"> </span>(.Machine<span class="op">$</span>double.ulp.digits <span class="op">-</span><span class="st"> </span>1L) <span class="op">==</span><span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>.Machine<span class="op">$</span>double.base <span class="op">^</span><span class="st"> </span>(.Machine<span class="op">$</span>double.ulp.digits <span class="op">-</span><span class="st"> </span>1L) <span class="op">==</span><span class="st"> </span><span class="dv">1</span></code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="co">## largest possible significand</span></a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">u &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> 1L<span class="op">:</span><span class="dv">53</span>) u &lt;-<span class="st"> </span>u <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span>i)</a>
-<a class="sourceLine" id="cb49-4" data-line-number="4">u</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## largest possible significand</span>
+u &lt;-<span class="st"> </span><span class="dv">0</span>
+<span class="cf">for</span> (i <span class="cf">in</span> 1L<span class="op">:</span><span class="dv">53</span>) u &lt;-<span class="st"> </span>u <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span>i)
+u</code></pre>
 <pre><code>## [1] 0.99999999999999988898</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="co">## and the largest possible exponent--note that calculating 2^1024</span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="co">## directly overflows</span></a>
-<a class="sourceLine" id="cb51-3" data-line-number="3">u <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">1023</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## and the largest possible exponent--note that calculating 2^1024</span>
+<span class="co">## directly overflows</span>
+u <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">1023</span></code></pre>
 <pre><code>## [1] 1.7976931348623157081e+308</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="co">## next largest floating point number overflows</span></a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">(u <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">1023</span>) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## next largest floating point number overflows</span>
+(u <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">1023</span>) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span>)</code></pre>
 <pre><code>## [1] Inf</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="co">## smallest possible mantissa and smallest possible exponent</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span><span class="dv">1022</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## smallest possible mantissa and smallest possible exponent</span>
+<span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span><span class="dv">1022</span>)</code></pre>
 <pre><code>## [1] 4.9406564584124654418e-324</code></pre>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span><span class="dv">1022</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span>(<span class="op">-</span><span class="dv">1022</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></code></pre>
 <pre><code>## [1] 0</code></pre>
 </div>
 <div id="error-analysis" class="section level3">
@@ -417,37 +418,37 @@ The computed subtraction is <span class="math inline">\(f(x) - f(y) = 1 / 2^t\)<
 So the relative error can be arbitrarily large.</p>
 <p>The error from subtraction operation also explains why approximating <span class="math inline">\(e^{x}\)</span> by partial sums does not work well for negative <span class="math inline">\(x\)</span> with a large magnitude. Consider an implementation of the exponential function with the Taylor series
 <span class="math inline">\(\exp(x) = \sum_{i=0}^{\infty} x^i / i!\)</span>.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">fexp &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">  i &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">  expx &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb59-4" data-line-number="4">  u &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb59-5" data-line-number="5">  <span class="cf">while</span> (<span class="kw">abs</span>(u) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>.e<span class="dv">-8</span> <span class="op">*</span><span class="st"> </span><span class="kw">abs</span>(expx)) {</a>
-<a class="sourceLine" id="cb59-6" data-line-number="6">    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb59-7" data-line-number="7">    u &lt;-<span class="st"> </span>u <span class="op">*</span><span class="st"> </span>x <span class="op">/</span><span class="st"> </span>i</a>
-<a class="sourceLine" id="cb59-8" data-line-number="8">    expx &lt;-<span class="st"> </span>expx <span class="op">+</span><span class="st"> </span>u</a>
-<a class="sourceLine" id="cb59-9" data-line-number="9">  }</a>
-<a class="sourceLine" id="cb59-10" data-line-number="10">  expx</a>
-<a class="sourceLine" id="cb59-11" data-line-number="11">}</a>
-<a class="sourceLine" id="cb59-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb59-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb59-14" data-line-number="14"><span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb59-15" data-line-number="15">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>)</a>
-<a class="sourceLine" id="cb59-16" data-line-number="16"><span class="kw">cbind</span>(<span class="kw">exp</span>( x), <span class="kw">sapply</span>( x, fexp))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fexp &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  i &lt;-<span class="st"> </span><span class="dv">0</span>
+  expx &lt;-<span class="st"> </span><span class="dv">1</span>
+  u &lt;-<span class="st"> </span><span class="dv">1</span>
+  <span class="cf">while</span> (<span class="kw">abs</span>(u) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>.e<span class="dv">-8</span> <span class="op">*</span><span class="st"> </span><span class="kw">abs</span>(expx)) {
+    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>
+    u &lt;-<span class="st"> </span>u <span class="op">*</span><span class="st"> </span>x <span class="op">/</span><span class="st"> </span>i
+    expx &lt;-<span class="st"> </span>expx <span class="op">+</span><span class="st"> </span>u
+  }
+  expx
+}
+
+
+<span class="kw">options</span>(<span class="dt">digits =</span> <span class="dv">10</span>)
+x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>)
+<span class="kw">cbind</span>(<span class="kw">exp</span>( x), <span class="kw">sapply</span>( x, fexp))</code></pre>
 <pre><code>##                 [,1]            [,2]
 ## [1,] 2.202646579e+04 2.202646575e+04
 ## [2,] 4.851651954e+08 4.851651931e+08
 ## [3,] 1.068647458e+13 1.068647454e+13</code></pre>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">cbind</span>(<span class="kw">exp</span>(<span class="op">-</span>x), <span class="kw">sapply</span>(<span class="op">-</span>x, fexp))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="kw">exp</span>(<span class="op">-</span>x), <span class="kw">sapply</span>(<span class="op">-</span>x, fexp))</code></pre>
 <pre><code>##                 [,1]             [,2]
 ## [1,] 4.539992976e-05  4.539992956e-05
 ## [2,] 2.061153622e-09  5.621884467e-09
 ## [3,] 9.357622969e-14 -3.066812359e-05</code></pre>
 <p>The accuracy is poor for <span class="math inline">\(x &lt; 0\)</span>. The problem in accuracy occurs because the terms alternate in sign, and some of the terms are much greater than the final answer. It can be fixed by noting that <span class="math inline">\(\exp(-x) = 1 / \exp(x)\)</span>.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">fexp2 &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2">  <span class="cf">if</span> (x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) <span class="kw">fexp</span>(x) <span class="cf">else</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="kw">fexp</span>(<span class="op">-</span>x)</a>
-<a class="sourceLine" id="cb63-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb63-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb63-5" data-line-number="5"><span class="kw">cbind</span>(<span class="kw">exp</span>(<span class="op">-</span>x), <span class="kw">sapply</span>(<span class="op">-</span>x, fexp2))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fexp2 &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="cf">if</span> (x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span>) <span class="kw">fexp</span>(x) <span class="cf">else</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="kw">fexp</span>(<span class="op">-</span>x)
+}
+
+<span class="kw">cbind</span>(<span class="kw">exp</span>(<span class="op">-</span>x), <span class="kw">sapply</span>(<span class="op">-</span>x, fexp2))</code></pre>
 <pre><code>##                 [,1]            [,2]
 ## [1,] 4.539992976e-05 4.539992986e-05
 ## [2,] 2.061153622e-09 2.061153632e-09
@@ -469,8 +470,8 @@ F(x; \mu, \sigma, \xi) =
 \end{cases}
 \end{equation*}\]</span>
 for <span class="math inline">\(\mu \in R\)</span>, <span class="math inline">\(\sigma &gt; 0\)</span>, <span class="math inline">\(\xi \in R\)</span>.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">curve</span>(evir<span class="op">::</span><span class="kw">pgev</span>(<span class="dv">1</span>, <span class="dt">xi =</span> x),    <span class="fl">1e-20</span>, <span class="fl">.01</span>, <span class="dt">log=</span><span class="st">&quot;x&quot;</span>, <span class="dt">n =</span> <span class="dv">1025</span>)</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="kw">curve</span>(texmex<span class="op">::</span><span class="kw">pgev</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, x), <span class="fl">1e-20</span>, <span class="fl">.01</span>, <span class="dt">log=</span><span class="st">&quot;x&quot;</span>, <span class="dt">n =</span> <span class="dv">1025</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">curve</span>(evir<span class="op">::</span><span class="kw">pgev</span>(<span class="dv">1</span>, <span class="dt">xi =</span> x),    <span class="fl">1e-20</span>, <span class="fl">.01</span>, <span class="dt">log=</span><span class="st">&quot;x&quot;</span>, <span class="dt">n =</span> <span class="dv">1025</span>)
+<span class="kw">curve</span>(texmex<span class="op">::</span><span class="kw">pgev</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, x), <span class="fl">1e-20</span>, <span class="fl">.01</span>, <span class="dt">log=</span><span class="st">&quot;x&quot;</span>, <span class="dt">n =</span> <span class="dv">1025</span>)</code></pre>
 <div class="figure"><span id="fig:gev"></span>
 <img src="index_files/figure-html/gev-1.png" alt="Two implementations of GEV distribution function when $\xi$ is close to zero." width="50%" /><img src="index_files/figure-html/gev-2.png" alt="Two implementations of GEV distribution function when $\xi$ is close to zero." width="50%" />
 <p class="caption">
@@ -599,7 +600,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;
