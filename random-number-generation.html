@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-10-11">
+<meta name="date" content="2018-10-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -177,9 +177,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="random-number-generation.html"><a href="random-number-generation.html"><i class="fa fa-check"></i><b>5</b> Random Number Generation</a><ul>
-<li class="chapter" data-level="5.1" data-path="random-number-generation.html"><a href="random-number-generation.html#exercises-3"><i class="fa fa-check"></i><b>5.1</b> Exercises</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="random-number-generation.html"><a href="random-number-generation.html#rejection-sampling"><i class="fa fa-check"></i><b>5.1.1</b> Rejection sampling</a></li>
-<li class="chapter" data-level="5.1.2" data-path="random-number-generation.html"><a href="random-number-generation.html#mixture-of-beta"><i class="fa fa-check"></i><b>5.1.2</b> Mixture of beta</a></li>
+<li class="chapter" data-level="5.1" data-path="random-number-generation.html"><a href="random-number-generation.html#univariate-random-number-generation"><i class="fa fa-check"></i><b>5.1</b> Univariate Random Number Generation</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="random-number-generation.html"><a href="random-number-generation.html#inverse-cdf"><i class="fa fa-check"></i><b>5.1.1</b> Inverse CDF</a></li>
+<li class="chapter" data-level="5.1.2" data-path="random-number-generation.html"><a href="random-number-generation.html#rejection-method"><i class="fa fa-check"></i><b>5.1.2</b> Rejection Method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-number-generation.html"><a href="random-number-generation.html#exercises-3"><i class="fa fa-check"></i><b>5.2</b> Exercises</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-number-generation.html"><a href="random-number-generation.html#rejection-sampling"><i class="fa fa-check"></i><b>5.2.1</b> Rejection sampling</a></li>
+<li class="chapter" data-level="5.2.2" data-path="random-number-generation.html"><a href="random-number-generation.html#mixture-proposal"><i class="fa fa-check"></i><b>5.2.2</b> Mixture Proposal</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html"><i class="fa fa-check"></i><b>6</b> Markov Chain Monte Carlo</a></li>
@@ -203,11 +207,350 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="random-number-generation" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Random Number Generation</h1>
-<p>Simulation basics.</p>
+<p>(Wiki)
+A pseudorandom number generator (PRNG), also known as a deterministic
+random bit generator (DRBG), is an algorithm for generating a sequence
+of numbers whose properties approximate the properties of sequences of
+random numbers. The PRNG-generated sequence is not truly random, because
+it is completely determined by a relatively small set of initial values,
+called the PRNG’s seed (which may include truly random values).</p>
+<div id="univariate-random-number-generation" class="section level2">
+<h2><span class="header-section-number">5.1</span> Univariate Random Number Generation</h2>
+<p>Random number from standard uniform distribution <span class="math inline">\(U(0, 1)\)</span> is crucial.
+To illustrate that pseudorandom numbers are deterministic,
+consider a multiplicative random number generator
+
+<span class="math display">\[
+I_{n+1} = 7^5 I_n\mathrm{mod} (2^{31} - 1).
+\]</span></p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">runif.my &lt;-<span class="st"> </span><span class="cf">function</span>(n, seed) {</a>
+<a class="sourceLine" id="cb80-2" data-line-number="2">  ret &lt;-<span class="st"> </span><span class="kw">double</span>(n)</a>
+<a class="sourceLine" id="cb80-3" data-line-number="3">  last &lt;-<span class="st"> </span>seed</a>
+<a class="sourceLine" id="cb80-4" data-line-number="4">  p &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">31</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb80-5" data-line-number="5">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb80-6" data-line-number="6">    last &lt;-<span class="st"> </span>(<span class="dv">7</span><span class="op">^</span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>last) <span class="op">%%</span><span class="st"> </span>p</a>
+<a class="sourceLine" id="cb80-7" data-line-number="7">    ret[i] &lt;-<span class="st"> </span>last <span class="op">/</span><span class="st"> </span>p</a>
+<a class="sourceLine" id="cb80-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb80-9" data-line-number="9">  ret</a>
+<a class="sourceLine" id="cb80-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb80-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb80-12" data-line-number="12">u &lt;-<span class="st"> </span><span class="kw">runif.my</span>(<span class="dv">1000</span>, <span class="dv">2</span>)</a></code></pre></div>
+<p>The randomness can be viewed from a histogram and can be tested,
+for example, with the KS test.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">hist</span>(u)</a></code></pre></div>
+<p><img src="04-rng_files/figure-html/unif-ks-1.png" width="672" /></p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">ks.test</span>(u, <span class="st">&quot;punif&quot;</span>)</a></code></pre></div>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  u
+## D = 0.020604, p-value = 0.7896
+## alternative hypothesis: two-sided</code></pre>
+<p>In , check .</p>
+<p>We assume that generation from <span class="math inline">\(U(0,1)\)</span> has been solved for all
+practical purposes and focus on turning uniform variables to
+variables with other desired distributions.</p>
+<div id="inverse-cdf" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> Inverse CDF</h3>
+<p>For a non-decreasing function <span class="math inline">\(F\)</span> on <span class="math inline">\(\mathbb{R}\)</span>,
+the generalized inverse of <span class="math inline">\(F\)</span>, <span class="math inline">\(F^-\)</span>, is the function
+<span class="math display">\[
+F^-(u) = \inf\{x: F(x) \ge u\}.
+\]</span>
+If <span class="math inline">\(U\)</span> is <span class="math inline">\(U(0, 1)\)</span>, then <span class="math inline">\(F^-(U)\)</span> has distribution <span class="math inline">\(F\)</span>.
+For continuous variables, <span class="math inline">\(F^-\)</span> is simply <span class="math inline">\(F^{-1}\)</span>, the quantile
+function or inverse probability integral transformation.
+This works for both continuous and non-continuous variables.</p>
+<!-- \begin{example} -->
+<p>Average numbers of searches for Poisson variate generation
+with mean <span class="math inline">\(\lambda\)</span> (Ross’s Simulation book, p.51).
+Given a <span class="math inline">\(U\)</span>, the inversion algorithm successively checks if the Poisson
+variate is 0, 1, 2, and so on, which on average takes <span class="math inline">\(1 + \lambda\)</span> searches.
+It can be greatly improved by first checking on the integers that
+are closest to <span class="math inline">\(\lambda\)</span>.
+Let <span class="math inline">\(I\)</span> be the integer part of <span class="math inline">\(\lambda\)</span>.
+To generate a Poisson variate <span class="math inline">\(X\)</span>, check whether or not <span class="math inline">\(X \le I\)</span>
+by seeing whether or not <span class="math inline">\(U \le F(I)\)</span>.
+Then search downward starting from <span class="math inline">\(I\)</span> if <span class="math inline">\(X \le I\)</span> and upward
+from <span class="math inline">\(I + 1\)</span> otherwise.</p>
+<p>On average the number of searches needed by this algorithm is roughly
+1 more than the mean absolute difference between <span class="math inline">\(X\)</span> and <span class="math inline">\(\lambda\)</span>.
+By <span class="math inline">\(N(\lambda, \lambda)\)</span> approximation, this is approximately
+<span class="math display">\[
+1 + E |X - \lambda| = 1 + 0.798 \sqrt{\lambda}.
+\]</span></p>
+<p>The <code>{rpois()}</code> function in R uses an efficient algorithm
+that generates variables for <span class="math inline">\(\lambda \ge 10\)</span> by truncating suitable
+normal deviates and applying a correction with low probability
+<span class="citation">(Ahrens and Dieter <a href="#ref-Ahre:Diet:comp:1982">1982</a>)</span>.
+<!-- \end{example} --></p>
+</div>
+<div id="rejection-method" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> Rejection Method</h3>
+<p>Idea: To sample from <span class="math inline">\(f\)</span>, we sample from <span class="math inline">\(g\)</span>
+and accept the sample with certain rate to
+make sure the resulting variable follows <span class="math inline">\(f\)</span>.</p>
+<p>Setup:
+1) densities <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> has the same support.
+2) <span class="math inline">\(f(x) \le M g(x)\)</span> for some <span class="math inline">\(M &gt; 0\)</span>.</p>
+<p>The rejection algorithm:</p>
+<ol style="list-style-type: decimal">
+<li>Generate <span class="math inline">\(Y\)</span> from <span class="math inline">\(g\)</span>.</li>
+<li>Generate <span class="math inline">\(U\)</span> from standard uniform.</li>
+<li>If <span class="math inline">\(U \le f(Y) / [M g(Y)]\)</span>, output <span class="math inline">\(X = Y\)</span>;
+otherwise, return to step 1.</li>
+</ol>
+<p>Validity proof:
+For <span class="math inline">\(x\)</span> in <span class="math inline">\(\mathcal{X}\)</span>, the support of <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>,
+show that
+<span class="math inline">\(\Pr(X \le x) = \Pr(Y \le x \mid \mbox{Accept}) = \int_{-\infty}^x f(y) \mathrm{d}y\)</span>.</p>
+<p>Fundamental theorem of simulation:
+Simulating from <span class="math inline">\(X \sim f(x)\)</span> is equivalent to
+simulating from <span class="math inline">\((X, U) ~ \mathcal{U}\{\{x, u\}: 0 &lt; u &lt; f(x)\}\)</span>.
+(Hint: the marginal density of <span class="math inline">\(X\)</span> is <span class="math inline">\(f(x)\)</span>.)</p>
+<p>Efficiency:
+The probability of acceptance is exactly <span class="math inline">\(1 / M\)</span>.
+The expected number of trials until a variable is accepted is <span class="math inline">\(M\)</span>.</p>
+<p>Among choices of <span class="math inline">\(g\)</span>, <span class="math inline">\(g_i\)</span>’s, the optimal sampler minimizes <span class="math inline">\(M\)</span>.</p>
+<!-- \begin{example} -->
+<!--    Uni-modal beta from uniform. -->
+<!-- \end{example} -->
+<!-- \begin{example} -->
+<!-- Normal from double exponential. -->
+<!-- Consider double exponential distribution with rate $\alpha > 0$ -->
+<!-- as proposal density: -->
+<!-- $g(x| \alpha) = \frac{\alpha}{2}\exp(-\alpha |x|)$. -->
+<!-- Show that -->
+<!-- \begin{equation*} -->
+<!--   \frac{f(x)}{g(x | \alpha)} \le \frac{\sqrt{2 / \pi} \exp(\alpha^2 / 2)}{\alpha} -->
+<!-- \end{equation*} -->
+<!-- Use \code{curve} to show the shape of this ratio. -->
+<!-- \end{example} -->
+<!-- \begin{example} -->
+<!-- A nonstandard density \citep[p.50]{Robe:Case:mont:2004}. -->
+<!-- Consider density  -->
+<!-- $f(x) \propto \exp(-x^2 / 2)\big(\sin(6x)^2 + 3 \cos(x)^2\sin(4x)^2 + 1\big)$. -->
+<!-- An envelope function is $g(x) = 5 \exp(-x^2 / 2)$. -->
+<!-- \input{ch06-rng/rejsamp} -->
+<!-- \end{example} -->
+<!-- \subsection{Adaptive Rejection Sampling} -->
+<!-- For log-concave density $f(x)$, construct proposal distribution -->
+<!-- as piecewise exponential distributions; that is, segments of -->
+<!-- multiple exponential distributions attached end to end. -->
+<!-- The idea of envelope based on a set of points -->
+<!-- $S_n = \{x_i, i = 0, \ldots, n+1\}$. -->
+<!-- Given the convexity of $h(x) = \log f(x)$, the line connecting  -->
+<!-- $(x_i, h(x_i))$ and $(x_{i+1}, h(x_{i+1}))$ is below $h$ in  -->
+<!-- $[x_i, x_{i+1}]$ and above $h$ outside this interval. -->
+<!-- The envelop can be normalized to a piecewise exponential  -->
+<!-- density $g_n(x)$, with $f(x) / g_n(x) \le \omega_n$. -->
+<!-- Define upper and lower envelop: -->
+<!-- $l_n(x) \le f(x) \le u_n(x) = \omega_n g_n(x)$. -->
+<!-- The ARS algorithm: -->
+<!-- \begin{enumerate} -->
+<!-- \item Initialize $n$ and $S_n$. -->
+<!-- \item Generate $X ~ g_n(x)$ and $U \sim U(0,1)$. -->
+<!-- \item If $U \le l_n(X) / [\omega_n g_n(X)]$, accept $X$; -->
+<!--   otherwise, -->
+<!--   if $U \le f(X) / [\omega_n g_n(X)]$, accept $X$, -->
+<!--   and update $S_n$ to $S_{n+1} = S_n \cup \{X\}$. -->
+<!-- \end{enumerate} -->
+<!-- The two envelopes become increasingly accurate. -->
+<!-- The number of evaluation of $f$ is progressively reduced. -->
+<!-- R package \pkg{ars}. -->
+<!-- \subsection{Adaptive Rejection Metropolis Sampling} -->
+<!-- \citep{Gilk:Best:Tan:adap:1995} -->
+<!-- For non log-concave densities. -->
+<!-- R packages \pkg{HI} and \pkg{dlm}. -->
+<!-- \subsection{Transformation} -->
+<!-- Examples from math stats: -->
+<!-- exponential and Weibull; -->
+<!-- exponential and uniform; -->
+<!-- gamma and beta; -->
+<!-- normal and chi squared; -->
+<!-- chi squared and F. -->
+<!-- \begin{example} -->
+<!-- Box--Muller algorithm for normal. -->
+<!-- For independent standard uniform variables $U_1$ and $U_2$, -->
+<!-- \begin{equation*} -->
+<!--   X_1 = \sqrt{- 2 \log U_1} \cos(2 \pi U_2) -->
+<!--   \quad -->
+<!--   X_2 = \sqrt{- 2 \log U_1} \sin(2 \pi U_2) -->
+<!-- \end{equation*} -->
+<!-- are independent $N(0, 1)$ variables. -->
+<!-- \end{example} -->
+<!-- \section{Multivariate} -->
+<!-- \paragraph{Rejection sampling} -->
+<!-- \begin{example} -->
+<!-- Conditional sampling from elliptical distributions -->
+<!-- \citep{Wang:Yan:prac:2013}. -->
+<!-- \end{example} -->
+<!-- \paragraph{Sequential conditioning} -->
+<!-- \begin{example} -->
+<!-- Multinomial. -->
+<!-- Consider multinomial distribution with $n$ trials and probability -->
+<!-- vector $(p_1, \ldots, p_k)$. -->
+<!-- Sample $X_1, \ldots, X_2$ sequentially: -->
+<!-- $X_1$ is binomial$(n, p_1)$; -->
+<!-- $X_2 | X_1 = x_1$ is binomial$\big(n - x_1, p_2 / (1 - p_1)\big)$; -->
+<!-- $\ldots$; -->
+<!-- $X_j | X_1 = x_1, \ldots, X_{j-1} = x_{j-1}$ -->
+<!-- is binomial$\big(n - x_1 - \ldots - x_{j-1}, p_j / ( 1 - p_1 - \ldots - p_{j-1}) \big)$. -->
+<!-- \end{example} -->
+<!-- \begin{example} -->
+<!-- GEVr distribution. -->
+<!-- Consider a random sample of size $m$ from some distribution function $G$. -->
+<!-- It has been shown \citep{Tawn:extr:1988} that, as $m \rightarrow \infty$,  -->
+<!-- the top $r \ll m$ order statistics, when normalized by some constants,  -->
+<!-- converge in distribution to the GEV$_r$ distribution with density function -->
+<!-- \begin{equation} -->
+<!-- \label{eq:gevr} -->
+<!-- f_r (x_1,x_2, ..., x_r | \mu, \sigma, \xi) = \sigma^{-r}\exp\Big\{-(1+\xi z_r)^{-\frac{1}{\xi}} - \left(\frac{1}{\xi}+1\right)\sum_{j=1}^{r}\log(1+\xi z_j)\Big\} -->
+<!-- \end{equation} -->
+<!-- for some location parameter $\mu$, scale parameter $\sigma > 0$ -->
+<!-- and shape parameter $\xi$,  -->
+<!-- where $x_1 >  \cdots> x_r$, $z_j = (x_j - \mu) / \sigma$,  -->
+<!-- and $ 1 + \xi z_j > 0 $ for $j=1,2,..., r$. -->
+<!-- When $r = 1$, this is the density of the GEV distribution. -->
+<!-- \input{ch06-rng/gevr} -->
+<!-- \end{example} -->
+<!-- \section{Copulas} -->
+<!-- Multivariate distributions with given margins are characterized by -->
+<!-- copulas, which is the unique characterization of the dependence structure. -->
+<!-- From Sklar's Theorem, every continuous multivariate distribution function -->
+<!-- $F$ has a representation  -->
+<!-- \[ -->
+<!-- F(x_1, \ldots, x_p) = C\Big( F_1(x_1), \ldots, F_p(x_p) \Big) -->
+<!-- \] -->
+<!-- where $F_i$ is the distribution function of margin $i$,  -->
+<!-- $i = 1, \ldots, p$, and $C$ is a unique \emph{copula} function. -->
+<!-- From the probability integral transformation, it is clear that $C$ is -->
+<!-- the distribution function of multivariate standard uniform variables. -->
+<!-- Every continuous multivariate distribution uniquely determines a copula, -->
+<!-- which can be used to ``couple'' given marginal distributions. -->
+<!-- Copulas are invariant to monotone transformations.  -->
+<!-- Kendall's tau and Spearman's rho depend only on the copulas as opposed to -->
+<!-- marginal distributions, and are therefore better association measures than -->
+<!-- Pearson's linear correlation coefficient. -->
+<!-- \input{ch06-rng/copula} -->
+<!-- \section{Stochastic processes} -->
+<!-- Application in survival analysis. -->
+<!-- For example, how to generate survival times from the Cox model -->
+<!-- with a general smooth baseline hazard function? -->
+<!-- \subsection{Poisson process} -->
+<!-- \paragraph{Homogeneous} -->
+<!-- Independent exponential arrival. -->
+<!-- Conditional on the total number of events in an interval -->
+<!-- $(0, \tau]$, the event times are distributed as order statistics -->
+<!-- from a random sample with uniform distribution over $(0, \tau]$. -->
+<!-- \paragraph{Nonhomogeneous} -->
+<!-- The inversion method \citep[p.96]{Cinl:intr:1975}: -->
+<!-- Let $\Lambda(t)$, $t > 0$, be a continuous, nondecreasing  -->
+<!-- mean function of a nonhomogeneous Poisson process.  -->
+<!-- If $\Lambda(T_1), \Lambda(T_2), \ldots$ -->
+<!-- are event times from a homogeneous Poisson process with rate one, -->
+<!-- then $T_1, T_2, \ldots$ are event times from a nonhomogeneous -->
+<!-- Poisson process with mean function $\Lambda(t)$. -->
+<!-- The order statistics method \citep{Cox:Lewi:stat:1966}: -->
+<!-- Let $T_1, T_2, \ldots$ be random variables representing the event -->
+<!-- times of a nonhomogeneous Poisson process with continuous mean function  -->
+<!-- $\Lambda(t)$, $t > 0$. -->
+<!-- Let $N_t$ be the cumulative number of events by time $t$. -->
+<!-- Conditional on $N_{\tau} = n$ over the interval $(0, \tau]$, -->
+<!-- the event times $T_1, T_2, \ldots$ are distributed as order statistics -->
+<!-- from a random sample with distribution function  -->
+<!-- $F(t) = \Lambda(t) / \Lambda(\tau)$, $t \in (0, \tau]$. -->
+<!-- The thinning method (process analog of the acceptance-rejection method) -->
+<!-- \citep{Lewi:Shed:simu:1979}: -->
+<!-- Let $\lambda_{\max} = \max_{t \in (0, \tau]} \lambda(t)$. -->
+<!-- Suppose that $S_1, S_2, \ldots$ are event times from a homogeneous  -->
+<!-- Poisson process with rate function $\lambda(t)$.  -->
+<!-- If the $i$th event time $S_i$ is independently accepted with -->
+<!-- probability $\lambda(t) / \lambda_{\max}$, the the remaining event -->
+<!-- times form a realization from a nonhomogeneous Poisson process with  -->
+<!-- rate function $\lambda(t)$ in $(0, \tau]$. -->
+<!-- Discussion: what are the pros and cons of these methods? -->
+<!-- \paragraph{Applications} -->
+<!-- Survival or recurrent event times from Cox models with  -->
+<!-- timevarying covariates or timevarying coefficients or both. -->
+<!-- \paragraph{Two Dimensional?} -->
+<!-- \section{Applications} -->
+<!-- \subsection{Monte Carlo Integration} -->
+<!-- Evaluate integral -->
+<!-- \begin{equation*} -->
+<!--   E_f[ h(X)] = \int_{\mathcal{X}} h(x) f(x) \dif x. -->
+<!-- \end{equation*} -->
+<!-- If sampling from $f$ can be done, -->
+<!-- approximate by sample average -->
+<!-- \begin{equation*} -->
+<!--   \bar h_n = \frac{1}{n}\sum_{j=1}^n h(X_j), -->
+<!-- \end{equation*} -->
+<!-- where $X_1, \ldots, X_n$ are a random sample from $f$. -->
+<!-- The convergence is enforced by the SLLN. -->
+<!-- The speed of the convergence can be assessed if $E h^2(X) < \infty$ -->
+<!-- with the CLT. -->
+<!-- The order of the Monte Carlo error is $\sqrt{\VAR[h(X)] / n}$. -->
+<!-- The error of estimating $E_f[ h(X)]$ declines at the rate of $n^{-1/2}$. -->
+<!-- This is slower than the quadrature method with $n$ quadrature  -->
+<!-- points, which has a rate of $O(n^{-k}$ for $k \ge 2$ typically. -->
+<!-- \subsection{Importance Sampling} -->
+<!-- Importance sampling, also known as weighted sampling,  -->
+<!-- is a technique for variance reduction in Monte Carlo integration. -->
+<!-- Evaluate integral -->
+<!-- \begin{equation*} -->
+<!--   E_f[ h(X)] = \int_{\mathcal{X}} h(x) \frac{f(x)}{g(x)} g(x) \dif x, -->
+<!-- \end{equation*} -->
+<!-- where $g$ is another density such that  -->
+<!-- $g(x) > 0$ when $h(x) f(x) \ne 0$. -->
+<!-- Let $Y_1, \ldots, Y_n$ be a random sample from $g$. -->
+<!-- An unbiased estimator of $E_f[ h(X)]$ is a weighted average -->
+<!-- \[ -->
+<!-- \frac{1}{n}\sum_{i=1}^n h(Y_i) w(Y_i), -->
+<!-- \] -->
+<!-- where $w(Y_i) =  f(Y_i) / g(Y_i)$ is called importance weight. -->
+<!-- Convergence assured by SLLN. -->
+<!-- But the variance is finite only if -->
+<!-- \begin{equation*} -->
+<!--   E_g[h^2(X) f^2(X) / g^2(X)] < \infty. -->
+<!-- \end{equation*} -->
+<!-- In order for the weighted estimator has smaller variance than the naive -->
+<!-- estimator, we need to have -->
+<!-- \[ -->
+<!-- \int\left[\frac{h(x) f(x)}{g(x)}\right]^2 g(x) \dif x -->
+<!-- \le \int h^2(x) f(x) \dif x. -->
+<!-- \] -->
+<!-- The choice of $g$ that minimizes the variance of the estimator is -->
+<!-- \begin{equation*} -->
+<!--   g^*(x) = \frac{|h(x)| f(x)}{\int_{\mathcal{X}} |h(z)| f(z) \dif z}. -->
+<!-- \end{equation*} -->
+<!-- The proof is straightforward with Jensen's inequality -->
+<!-- \citep[Theorem 3.12]{Robe:Case:mont:2004}. -->
+<!-- The result is slightly irrelevant since $\int |h(z) f(z) \dif z$ -->
+<!-- is exactly what we need to find out. -->
+<!-- Nonetheless, it implies that the variance of the weighted estimator -->
+<!-- is lower if $g(z)$ resembles $|h(z)| f(z)$, in which case, -->
+<!-- random points are sampled where they are needed most for accuracy. -->
+<!-- \begin{example} -->
+<!-- Conditional tail expectation (CTE) or tail value at risk (TVaR): -->
+<!-- \[ -->
+<!-- E[X | X > X_{\alpha}] -->
+<!-- \] -->
+<!-- where $X_{\alpha}$ is the upper $\alpha$-quantile. -->
+<!-- Suppose that $X$ is a $N(0, 1)$ variable. -->
+<!-- An importance sampler with an exponential proposal -->
+<!-- can be devised to evaluate the CTE. -->
+<!-- A related problem is: how to sample from the conditional tail -->
+<!-- distribution? -->
+<!-- \end{example} -->
+<!-- Comparison with rejection method. -->
+<!-- Both have a proposal density. -->
+<!-- The goals (outputs) are different. -->
+</div>
+</div>
 <div id="exercises-3" class="section level2">
-<h2><span class="header-section-number">5.1</span> Exercises</h2>
+<h2><span class="header-section-number">5.2</span> Exercises</h2>
 <div id="rejection-sampling" class="section level3">
-<h3><span class="header-section-number">5.1.1</span> Rejection sampling</h3>
+<h3><span class="header-section-number">5.2.1</span> Rejection sampling</h3>
 <p>Let <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> be two probability densities on <span class="math inline">\((0,\infty)\)</span>, such that
 <span class="math display">\[\begin{align*}
   f(x) \propto \sqrt{4+x}\,x^{\theta-1} e^{-x}, \quad
@@ -232,8 +575,8 @@ density in one figure.</li>
 kernel density of a random sample generated by your procedure and <span class="math inline">\(f\)</span>.</li>
 </ul>
 </div>
-<div id="mixture-of-beta" class="section level3">
-<h3><span class="header-section-number">5.1.2</span> Mixture of beta</h3>
+<div id="mixture-proposal" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Mixture Proposal</h3>
 <p>Let <span class="math inline">\(f\)</span> be a probability density on <span class="math inline">\((0,1)\)</span> such that
 <span class="math display">\[\begin{align*}
   f(x) \propto \frac{x^{\theta-1}}{1+x^2} + \sqrt{2+x^2}
@@ -264,6 +607,12 @@ your procedure and <span class="math inline">\(f\)</span>.</li>
 </ul>
 
 </div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Ahre:Diet:comp:1982">
+<p>Ahrens, Joachim H, and Ulrich Dieter. 1982. “Computer Generation of Poisson Deviates from Modified Normal Distributions.” <em>ACM Transactions on Mathematical Software (TOMS)</em> 8 (2). ACM: 163–79.</p>
 </div>
 </div>
             </section>

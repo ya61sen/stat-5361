@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-10-11">
+<meta name="date" content="2018-10-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -177,9 +177,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="random-number-generation.html"><a href="random-number-generation.html"><i class="fa fa-check"></i><b>5</b> Random Number Generation</a><ul>
-<li class="chapter" data-level="5.1" data-path="random-number-generation.html"><a href="random-number-generation.html#exercises-3"><i class="fa fa-check"></i><b>5.1</b> Exercises</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="random-number-generation.html"><a href="random-number-generation.html#rejection-sampling"><i class="fa fa-check"></i><b>5.1.1</b> Rejection sampling</a></li>
-<li class="chapter" data-level="5.1.2" data-path="random-number-generation.html"><a href="random-number-generation.html#mixture-of-beta"><i class="fa fa-check"></i><b>5.1.2</b> Mixture of beta</a></li>
+<li class="chapter" data-level="5.1" data-path="random-number-generation.html"><a href="random-number-generation.html#univariate-random-number-generation"><i class="fa fa-check"></i><b>5.1</b> Univariate Random Number Generation</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="random-number-generation.html"><a href="random-number-generation.html#inverse-cdf"><i class="fa fa-check"></i><b>5.1.1</b> Inverse CDF</a></li>
+<li class="chapter" data-level="5.1.2" data-path="random-number-generation.html"><a href="random-number-generation.html#rejection-method"><i class="fa fa-check"></i><b>5.1.2</b> Rejection Method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="random-number-generation.html"><a href="random-number-generation.html#exercises-3"><i class="fa fa-check"></i><b>5.2</b> Exercises</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="random-number-generation.html"><a href="random-number-generation.html#rejection-sampling"><i class="fa fa-check"></i><b>5.2.1</b> Rejection sampling</a></li>
+<li class="chapter" data-level="5.2.2" data-path="random-number-generation.html"><a href="random-number-generation.html#mixture-proposal"><i class="fa fa-check"></i><b>5.2.2</b> Mixture Proposal</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html"><i class="fa fa-check"></i><b>6</b> Markov Chain Monte Carlo</a></li>
@@ -606,7 +610,7 @@ where <span class="math inline">\(\pi_j\)</span>s are called mixing proportions,
 <p>Maximum likelihood estimation is commonly used to infer the unknown arameter
 <span class="math inline">\(\boldsymbol{\Psi}\)</span> in <a href="em-algorithm.html#eq:mixregequal">(4.5)</a>, i.e.,
 <span class="math display" id="eq:mixlinloglh">\[\begin{equation}
-\hat{\boldsymbol{\Psi}}_{\mbox{mle}}=\arg\max_{\boldsymbol{\Psi}}\sum_{i=1}^n\log\left\{\sum_{j=1}^m\pi_j\phi(y_i;\mathbf{x}_i^{\top}\boldsymbol{\beta}_{j},\sigma^2)\right\}.
+\hat{\boldsymbol{\Psi}}_{\mbox{mle}}=\arg\max_{\boldsymbol{\Psi}}\sum_{i=1}^n\log\left\{\sum_{j=1}^m\pi_j\phi(y_i;\textbf{x}_i^{\top}\boldsymbol{\beta}_{j},\sigma^2)\right\}.
 \tag{4.6}
 \end{equation}\]</span>
 The MLE does not have an explicit form and the problem is usually solved by the EM algorithm.</p>
@@ -619,18 +623,18 @@ In the E-step, we calculate the conditional expectation of the complete
 log-likelihood with respect to <span class="math inline">\(\mathbf{z}_{i}\)</span>, and in the M-step, we maximize the obtained conditional expectation with respect to <span class="math inline">\(\boldsymbol{\Psi}\)</span>.</p>
 <p>At the <span class="math inline">\(k\)</span>th iteration, the E-Step computes the conditional expectation of <span class="math inline">\(l_{n}^{c}(\boldsymbol{\Psi})\)</span>:
 <span class="math display">\[\begin{align*}
-Q(\boldsymbol{\Psi}\mid \boldsymbol{\Psi}^{(k)}) =\sum_{i=1}^{n}\sum_{j=1}^{m}p_{ij}^{(k+1)} \left\{\log\pi_{j}+\log\phi(y_{i}-\mathbf{x}_{i}^{\top}\boldsymbol{\beta}_{j};0,\sigma^{2})\right\},
+Q(\boldsymbol{\Psi}\mid \boldsymbol{\Psi}^{(k)}) =\sum_{i=1}^{n}\sum_{j=1}^{m}p_{ij}^{(k+1)} \left\{\log\pi_{j}+\log\phi(y_{i}-\textbf{x}_{i}^{\top}\boldsymbol{\beta}_{j};0,\sigma^{2})\right\},
 \end{align*}\]</span>
 where
 <span class="math display">\[\begin{align*}
-p_{ij}^{(k+1)}&amp;=E(z_{ij}\mid y_{i},\mathbf{x}_{i};\boldsymbol{\Psi}^{(k)})
-=\frac{\pi_{j}^{(k)}\phi(y_{i}-\mathbf{x}_{i}^{\top}\boldsymbol{\beta}_{j}^{(k)};0,\sigma^{2^{(k)}})}{\sum_{j=1}^{m}\pi_{j}^{(k)}\phi(y_{i}-\mathbf{x}_{i}^{\top}\boldsymbol{\beta}_{j}^{(k)};0,\sigma^{2^{(k)}})}.
+p_{ij}^{(k+1)}&amp;=E(z_{ij}\mid y_{i},\textbf{x}_{i};\boldsymbol{\Psi}^{(k)})
+=\frac{\pi_{j}^{(k)}\phi(y_{i}-\textbf{x}_{i}^{\top}\boldsymbol{\beta}_{j}^{(k)};0,\sigma^{2^{(k)}})}{\sum_{j=1}^{m}\pi_{j}^{(k)}\phi(y_{i}-\textbf{x}_{i}^{\top}\boldsymbol{\beta}_{j}^{(k)};0,\sigma^{2^{(k)}})}.
 \end{align*}\]</span>
 The M-Step maximizes <span class="math inline">\(Q(\boldsymbol{\Psi} \mid \boldsymbol{\Psi}^{(k)})\)</span> to obtain
 <span class="math display">\[\begin{align*}
    \pi_{j}^{(k+1)} &amp;=\frac{\sum_{i=1}^{n}p_{ij}^{(k+1)}}{n}\\
-    \boldsymbol{\beta}_{j}^{(k+1)}&amp;=\left(\sum_{i=1}^{n}\mathbf{x}_i\mathbf{x}_{i}^{\top}p_{ij}^{(k+1)}\right)^{-1}\left(\sum_{i=1}^{n}\mathbf{x}_ip_{ij}^{(k+1)}y_i\right),\qquad j=1,\ldots,m;\\
-    \sigma^{2^{(k+1)}}&amp;=\frac{\sum_{j=1}^{m}\sum_{i=1}^{n}p_{ij}^{(k+1)}(y_{i}-\mathbf{x}_{i}^{\top}\boldsymbol{\beta}_{j}^{(k+1)})^{2}}{n}.
+    \boldsymbol{\beta}_{j}^{(k+1)}&amp;=\left(\sum_{i=1}^{n}\textbf{x}_i\textbf{x}_{i}^{\top}p_{ij}^{(k+1)}\right)^{-1}\left(\sum_{i=1}^{n}\textbf{x}_ip_{ij}^{(k+1)}y_i\right),\qquad j=1,\ldots,m;\\
+    \sigma^{2^{(k+1)}}&amp;=\frac{\sum_{j=1}^{m}\sum_{i=1}^{n}p_{ij}^{(k+1)}(y_{i}-\textbf{x}_{i}^{\top}\boldsymbol{\beta}_{j}^{(k+1)})^{2}}{n}.
 \end{align*}\]</span></p>
 <ol style="list-style-type: decimal">
 <li><p>Follow the lecture notes to verify the validity of the provided E- and M-steps. That is, derive the updating rules in the given algorithm based on
