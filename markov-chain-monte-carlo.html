@@ -25,7 +25,7 @@
 <meta name="author" content="Jun Yan">
 
 
-<meta name="date" content="2018-10-13">
+<meta name="date" content="2018-10-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -187,7 +187,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="random-number-generation.html"><a href="random-number-generation.html#mixture-proposal"><i class="fa fa-check"></i><b>5.2.2</b> Mixture Proposal</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html"><i class="fa fa-check"></i><b>6</b> Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="6" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html"><i class="fa fa-check"></i><b>6</b> Markov Chain Monte Carlo</a><ul>
+<li class="chapter" data-level="6.1" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html#eample-normal-mixture"><i class="fa fa-check"></i><b>6.1</b> Eample: Normal mixture</a></li>
+<li class="chapter" data-level="6.2" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html#exercises-4"><i class="fa fa-check"></i><b>6.2</b> Exercises</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="markov-chain-monte-carlo.html"><a href="markov-chain-monte-carlo.html#normal-mixture-revisited"><i class="fa fa-check"></i><b>6.2.1</b> Normal mixture revisited</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
@@ -208,8 +213,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="markov-chain-monte-carlo" class="section level1">
 <h1><span class="header-section-number">Chapter 6</span> Markov Chain Monte Carlo</h1>
-<p>Someone may need this for the course project.</p>
+<div id="eample-normal-mixture" class="section level2">
+<h2><span class="header-section-number">6.1</span> Eample: Normal mixture</h2>
+<p>Generate some data with mixing rate <span class="math inline">\(\delta\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">delta &lt;-<span class="st"> </span><span class="fl">0.7</span> <span class="co"># true value to be estimated based on the data</span>
+n &lt;-<span class="st"> </span><span class="dv">100</span>
+<span class="kw">set.seed</span>(<span class="dv">254</span>)
+u &lt;-<span class="st"> </span><span class="kw">rbinom</span>(n, <span class="dt">prob =</span> delta, <span class="dt">size =</span> <span class="dv">1</span>)
+x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="kw">ifelse</span>(u <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">10</span>), <span class="fl">0.5</span>)</code></pre>
+<p>Assuming that the normal distribution parameters <span class="math inline">\(\mu_1\)</span>, <span class="math inline">\(\sigma_1^2\)</span>, <span class="math inline">\(\mu_2\)</span>, and <span class="math inline">\(\sigma_2^2\)</span> are known. The only unknown parameter is <span class="math inline">\(\delta\)</span>. The likelihood function of <span class="math inline">\(\delta\)</span> is</p>
+<pre class="sourceCode r"><code class="sourceCode r">mylike &lt;-<span class="st"> </span><span class="cf">function</span>(delta, x) {
+    <span class="kw">prod</span>(delta <span class="op">*</span><span class="st"> </span><span class="kw">dnorm</span>(x, <span class="dv">7</span>, <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>delta) <span class="op">*</span><span class="st"> </span><span class="kw">dnorm</span>(x, <span class="dv">10</span>, <span class="fl">0.5</span>))
+}</code></pre>
+<p>We impose an uninformative prior on <span class="math inline">\(\delta\)</span> and use a simple random walk proposal to construct the Metropolis–Hasting algorithm.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## simple random walk chain</span>
+myRange &lt;-<span class="st"> </span><span class="cf">function</span>(v, width) {
+    <span class="kw">min</span>(<span class="dv">1</span>, v <span class="op">+</span><span class="st"> </span>width) <span class="op">-</span><span class="st"> </span><span class="kw">max</span>(<span class="dv">0</span>, v <span class="op">-</span><span class="st"> </span>width)
+}
 
+mymcmc &lt;-<span class="st"> </span><span class="cf">function</span>(niter, init, x, width) {
+    v &lt;-<span class="st"> </span><span class="kw">double</span>(niter)
+    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>niter) {
+        cand &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>, <span class="kw">max</span>(<span class="dv">0</span>, init <span class="op">-</span><span class="st"> </span>width), <span class="kw">min</span>(<span class="dv">1</span>, init <span class="op">+</span><span class="st"> </span>width))
+        ratio &lt;-<span class="st"> </span><span class="kw">mylike</span>(cand, x) <span class="op">/</span><span class="st"> </span><span class="kw">myRange</span>(cand, width) <span class="op">/</span>
+<span class="st">            </span><span class="kw">mylike</span>(init, x) <span class="op">*</span><span class="st"> </span><span class="kw">myRange</span>(init, width)
+        <span class="cf">if</span> (<span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">&lt;</span><span class="st"> </span><span class="kw">min</span>(ratio, <span class="dv">1</span>)) {
+            v[i] &lt;-<span class="st"> </span>init &lt;-<span class="st"> </span>cand
+        } <span class="cf">else</span> v[i] &lt;-<span class="st"> </span>init
+    }
+    v
+}</code></pre>
+<p>With initial value <span class="math inline">\(\delta_0 = .2\)</span> and stepsize <span class="math inline">\(.1\)</span> in the random walk proposal, we run the 2500 iterations and throw away the first 500 iterations.</p>
+<pre class="sourceCode r"><code class="sourceCode r">niter &lt;-<span class="st"> </span><span class="dv">2500</span>
+<span class="kw">plot</span>(<span class="kw">ts</span>(z &lt;-<span class="st"> </span><span class="kw">mymcmc</span>(niter, <span class="fl">.2</span>, x, <span class="fl">.1</span>)[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>)]))</code></pre>
+<p><img src="05-mcmc_files/figure-html/nmix-res-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(z)</code></pre>
+<p><img src="05-mcmc_files/figure-html/nmix-res-2.png" width="672" /></p>
+</div>
+<div id="exercises-4" class="section level2">
+<h2><span class="header-section-number">6.2</span> Exercises</h2>
+<div id="normal-mixture-revisited" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Normal mixture revisited</h3>
+<p>Consider again the normal mixture example, except that the parameters of the normal distributions are considered unknown. Suppose that prior for <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span> are <span class="math inline">\(N(0, 10^2)\)</span>, that the prior for <span class="math inline">\(1/\sigma_1^2\)</span> and <span class="math inline">\(1/\sigma_2^2\)</span> are <span class="math inline">\(\Gamma(a, b)\)</span> with shape <span class="math inline">\(a = .5\)</span> and scale $ b = 10$. Further, all the priors are independent. Design an MCMC using the Gibbs sampling approach to estimate all 5 parameters. You may use the <strong>arms()</strong> function in package <strong>HI</strong>. Run your chain for sufficiently long and drop the burn-in period. Plot the histogram of the results for all the parameters.</p>
+
+</div>
+</div>
 </div>
             </section>
 
